@@ -3,7 +3,7 @@ import loadAmmo from "./physics/ammo-loader";
 import { createPhysicsWorld } from "./physics/world";
 import { createBoxBody } from "./physics/body-factory";
 
-export default async function initAmmo(scene: THREE.Scene) {
+export default async function initScene2(scene: THREE.Scene) {
   const AmmoLib = await loadAmmo();
   const { physicsWorld } = createPhysicsWorld(AmmoLib);
 
@@ -75,7 +75,7 @@ export default async function initAmmo(scene: THREE.Scene) {
   makeBarrier(0, 0.25, -1);
   makeBarrier(0, 0.25, 1);
   makeBarrier(-1, 0.25, 0);
-  makeBarrier(1, 0.25, 0);
+  //makeBarrier(1, 0.25, 0);
 
   makeGoal(0, 0.1, 0);
 
