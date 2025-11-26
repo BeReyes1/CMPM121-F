@@ -86,12 +86,8 @@ Most of our time was spent trying to understand the library enough to meet the r
 
 ### Run in browser:
 
-`npm run dev`
-
-### Linting automation:
-
-`npx eslint . --fix`
+npm run dev
 
 ### Formatting automation:
 
-`npx prettier . --write`
+npx prettier . --write
