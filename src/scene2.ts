@@ -217,5 +217,5 @@ export class Scene2 implements Scene {
     body.applyCentralImpulse(impulse);
   }
 
-  onClick(hitObject: THREE.Object3D): void {}
+  onClick(_hitObject: THREE.Object3D): void {}
 }
