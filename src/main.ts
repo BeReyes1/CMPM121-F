@@ -55,6 +55,20 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+// hooking up start screen
+const startScreen = document.getElementById("start-screen");
+const startButton = document.getElementById(
+  "start-button",
+) as HTMLButtonElement | null;
+
+if (startButton) {
+  startButton.addEventListener("click", async () => {
+    if (loadingScene) return;
+    startScreen?.classList.add("hidden");
+    await loadScene(new Scene1());
+  });
+}
+
 //const controls = new OrbitControls(camera, renderer.domElement);
 
 const clock = new THREE.Clock();
