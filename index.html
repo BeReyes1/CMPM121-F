@@ -9,6 +9,7 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
+    <!--start screen-->
     <div id="start-screen" class="overlay visible">
       <div class="overlay-inner start-inner">
         <div class="overlay-buttons">
@@ -16,6 +17,15 @@
           <button id="settings-button" class="secondary-btn">Settings</button>
           <button id="mode-button" class="secondary-btn">Mode (WIP)</button>
         </div>
+      </div>
+    </div>
+
+    <!--end screen-->
+    <div id="end-screen" class="overlay hidden">
+      <div class="overlay-inner end-inner">
+        <img src="/endLight.gif" alt="Escaped!" class="end-gif" />
+        <p class="end-text">You have successfully escaped, but what now?</p>
+        <button id="restart-button" class="primary-btn">Play Again</button>
       </div>
     </div>
   </body>
