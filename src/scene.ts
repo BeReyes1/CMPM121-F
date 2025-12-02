@@ -7,4 +7,5 @@ export interface Scene {
   update(delta: number): void; //anything that needs to happen every frame like physics
   onClick(hitObject: THREE.Object3D): void; //when something is clicked
   onSceneLeave?: (targetScene: Scene) => void; //when leaving the scene invoke event w/ scene
+  onSaveGame?: () => void; //when to save the game
 }

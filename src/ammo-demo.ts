@@ -3,7 +3,7 @@ import loadAmmo from "./physics/ammo-loader";
 import { createPhysicsWorld } from "./physics/world";
 import { createBoxBody } from "./physics/body-factory";
 import type { Scene } from "./scene";
-import { GameState } from "./gamestate";
+import { Inventory } from "./gamestate";
 import { Scene2 } from "./scene2";
 
 export class Scene1 implements Scene {
@@ -20,6 +20,7 @@ export class Scene1 implements Scene {
   scene!: THREE.Scene;
 
   onSceneLeave?: (targetScene: Scene) => void;
+  onSaveGame?: () => void;
 
   async init(scene: THREE.Scene): Promise<void> {
     this.AmmoLib = await loadAmmo();
@@ -264,8 +265,8 @@ export class Scene1 implements Scene {
   onClick(hitObject: THREE.Object3D): void {
     if (hitObject.userData.type == "Key") {
       this.scene.remove(hitObject);
-      GameState.inventory.push("Key");
-      console.log("Inventory:", GameState.inventory);
+      Inventory.addItem("Key", 1);
+      this.onSaveGame?.();
     }
   }
 }

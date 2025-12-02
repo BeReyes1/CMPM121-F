@@ -4,7 +4,7 @@ import loadAmmo from "./physics/ammo-loader";
 import { createPhysicsWorld } from "./physics/world";
 import { createBoxBody } from "./physics/body-factory";
 import type { Scene } from "./scene";
-import { GameState } from "./gamestate";
+import { Inventory } from "./gamestate";
 import { Scene1 } from "./ammo-demo";
 
 export class Scene2 implements Scene {
@@ -21,6 +21,7 @@ export class Scene2 implements Scene {
   scene!: THREE.Scene;
 
   onSceneLeave?: (targetScene: Scene) => void;
+  onSaveGame?: () => void;
 
   async init(scene: THREE.Scene): Promise<void> {
     this.AmmoLib = await loadAmmo();
@@ -142,7 +143,7 @@ export class Scene2 implements Scene {
   };
 
   onEnter(): void {
-    console.log("Inventory: ", GameState.inventory);
+    console.log("Inventory: ", Inventory.getGameStateInventory());
     window.addEventListener("keydown", this.handleMovement);
     window.addEventListener("keyup", this.handleMovementUp);
     window.addEventListener("keydown", this.handleSceneLeave);
@@ -187,7 +188,7 @@ export class Scene2 implements Scene {
   checkWinCondition() {
     if (this.win) return;
 
-    if (GameState.inventory.includes("Key")) {
+    if (Inventory.hasItem("Key")) {
       alert("You win!");
       this.playerMaterial.color.set(0x00ff00);
       this.win = true;

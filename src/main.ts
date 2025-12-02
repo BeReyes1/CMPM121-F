@@ -4,12 +4,10 @@ import * as THREE from "three";
 //import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import type { Scene } from "./scene";
 import { Scene1 } from "./ammo-demo";
-import { GameState } from "./gamestate";
+import { Inventory } from "./gamestate";
+import { Localization } from "./localization";
 
-/*IDEA: SCene 1: get key via puzzle
-Scene 2: used key to win game, go up to door and check?
-Scene 3: Victory screen (only accessible when use key in scene 2)
-
+/*
 UNCOMMENT CONTROLS BACK ON WHEN DONE, commented right now just so can use console
 */
 
@@ -20,6 +18,9 @@ let loadingScene = false;
 const raycast = new THREE.Raycaster();
 let mousePosition = new THREE.Vector2();
 
+const message = document.createElement("button");
+message.textContent = "Hi";
+
 async function loadScene(targetScene: Scene) {
   loadingScene = true;
 
@@ -28,6 +29,7 @@ async function loadScene(targetScene: Scene) {
   if (currentScene) {
     currentScene.onExit();
     currentScene.onSceneLeave = undefined;
+    currentScene.onSaveGame = undefined;
   }
 
   currentScene = targetScene;
@@ -35,10 +37,12 @@ async function loadScene(targetScene: Scene) {
   await currentScene.init(scene);
 
   currentScene.onSceneLeave = (newScene) => loadScene(newScene);
+  currentScene.onSaveGame = () => saveGame();
 
   currentScene.onEnter();
 
   loadingScene = false;
+  saveGame();
 }
 
 const camera = new THREE.PerspectiveCamera(
@@ -76,8 +80,31 @@ const clock = new THREE.Clock();
 //TEST FOR NOW-> ADDING TO INVENTORY
 window.addEventListener("keydown", (event) => {
   if (event.code === "KeyI") {
-    GameState.inventory.push("Test Item");
+    Inventory.addItem("test_item", 1);
+    saveGame();
   }
+});
+
+window.addEventListener("keydown", (event) => {
+  let changeLanguage: boolean = false;
+  if (event.code === "KeyB") {
+    Localization.setLanguage("en");
+    changeLanguage = true;
+  } else if (event.code === "KeyN") {
+    Localization.setLanguage("jp");
+    changeLanguage = true;
+  } else if (event.code == "KeyM") {
+    Localization.setLanguage("ar");
+    changeLanguage = true;
+  }
+
+  if (changeLanguage)
+    console.log("Language changed to: ", Localization.getText("start_button"));
+});
+
+//TEMP FOR TESTING NEWGAME
+window.addEventListener("keydown", (event) => {
+  if (event.code === "KeyL") newGame();
 });
 
 window.addEventListener("click", (event) => {
@@ -95,6 +122,8 @@ window.addEventListener("click", (event) => {
   if (currentScene) currentScene.onClick(hitObject);
 });
 
+loadGame();
+await Localization.initalizeRecord();
 await loadScene(new Scene1());
 
 // like update in unity
@@ -108,3 +137,31 @@ function animate() {
 }
 
 animate();
+
+function saveGame() {
+  const gameData = {
+    inventory: Inventory.getGameStateInventory(),
+  };
+
+  localStorage.setItem("gameSave", JSON.stringify(gameData));
+  console.log("Game saved with inventory: ", Inventory.getGameStateInventory());
+}
+
+function loadGame() {
+  const save = localStorage.getItem("gameSave");
+  if (!save) return;
+
+  const gameData = JSON.parse(save);
+  Inventory.setGameStateInventory(gameData.inventory);
+
+  console.log(
+    "Loaded game with inventory: ",
+    Inventory.getGameStateInventory(),
+  );
+}
+
+function newGame() {
+  localStorage.removeItem("gameSave");
+  Inventory.setGameStateInventory({});
+  alert("New game started.");
+}
