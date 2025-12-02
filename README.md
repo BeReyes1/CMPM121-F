@@ -88,7 +88,7 @@ Most of our time was spent trying to understand the library enough to meet the r
 
 ### 3D Rendering and Physics
 
-The game uses the same libraries for 3D rendering and physics simulation, which were Three.js and Ammo.js repectively. Both were imported and used to build and display our scenes and the objects within them.
+The game uses the same libraries for 3D rendering and physics simulation, which were Three.js and Ammo.js respectively. Both were imported and used to build and display our scenes and the objects within them.
 
 ### Switching Scenes
 
