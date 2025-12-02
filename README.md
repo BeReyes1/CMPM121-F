@@ -82,6 +82,44 @@ Most of our time was spent trying to understand the library enough to meet the r
 
 ---
 
+# Devlog #3 - 11/30/2025
+
+## Requirements
+
+### 3D Rendering and Physics
+
+The game uses the same libraries for 3D rendering and physics simulation, which were Three.js and Ammo.js repectively. Both were imported and used to build and display our scenes and the objects within them.
+
+### Switching Scenes
+
+The player is able to switch scenes by pressing the G key. This invokes an event that the main scene will read and switch scenes accordingly. The scene is reloaded. The system is robust enough to allow switching scenes in a different way such as going to a location.
+
+### Object Interaction
+
+The player can click on objects to interact with them. We currently have a key represented by a blue cube, which can be clicked on and placed into inventory. This effect is achieved through raycasting. The current scene will handle the necessary interactions.
+
+### Carrying Inventory Across Scenes
+
+Player inventory is stored as persistent data in a const Object called “GameState.” GameState currently has a single property which holds items in an array called inventory. When a key is in inventory and the player changes scenes, the player carries their inventory over into the next scene.
+
+### Physics-based Puzzle → Progression
+
+The player completes a physics based puzzle where the player tries to land on a target point. The player applies movement to the cube via forces. When the player succeeds, a key appears which can be clicked on and interacted with. Clicking the key places it into the player's inventory, and is necessary to beat the game in its current state.
+
+### Win/Loss State
+
+The player succeeds when they land the cube on the target area. The cube turns green on hitting the goal, and a key appears above the goal for the player to click on and store in inventory.
+
+### Conclusive Game End
+
+When the player collects the key and brings it to scene 2, they will receive a page popup that reads “You Win!” They need the key for the popup to show.
+
+## Reflection
+
+We had a meeting to discuss next steps for our project and designated tasks for F2 and F3 in the coming week. We have a clearer direction for where we want our game to head, and what each of our roles should be. Beckham and I will continue working on building each level; Kimi will help out with the additional features for F3 as needed, as well as making assets; Vivian will also help with the additional features and debugging. We've identified which bugs need fixing, as well as which four additional features we want to implement for F3: unlimited undo, save system, visual themes, and i18n/l8n.
+
+---
+
 # Dev Commands
 
 ### Run in browser:
