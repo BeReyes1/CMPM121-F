@@ -4,22 +4,35 @@ canvas {
   left: 0;
 }
 
+/* overlays */
 .overlay {
   position: fixed;
   inset: 0;
-  display: flex;
+  display: none;              /* default: HIDDEN */
   align-items: center;
   justify-content: center;
   z-index: 10;
 }
 
-.overlay.hidden {
-  display: none;
+.overlay.visible {
+  display: flex;              /* only visible when this class is present */
 }
 
 /* start screen */
 #start-screen {
-  background: url("/titleLight.png") center/cover no-repeat;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("/titleLight.png"); /* default before JS */
+}
+
+/* when ThemeFacade sets data-theme, swaps between light and dark png */
+:root[data-theme="light"] #start-screen {
+  background-image: url("/titleLight.png");
+}
+
+:root[data-theme="dark"] #start-screen {
+  background-image: url("/titleDark.png");
 }
 
 .start-inner {
@@ -50,39 +63,67 @@ canvas {
   margin-right: 60px;
 }
 
-/* buttons */
+/* button styles
 .primary-btn,
 .secondary-btn {
   min-width: 180px;
   padding: 10px 18px;
   border-radius: 999px;
-  border: 1px solid #38bdf8;
-  background: #0f172a;
-  color: #e5e7eb;
   font-size: 16px;
   cursor: pointer;
+  border-width: 1px;
+  border-style: solid;
+  transition: filter 0.15s ease, background-color 0.15s ease, color 0.15s ease,
+    border-color 0.15s ease;
 }
 
-.start-btn {
+/* light theme buttons */
+:root[data-theme="light"] .primary-btn {
   background: #000000;
   border-color: #000000;
   color: #ffffff;
 }
 
-.secondary-btn {
-  border-color: #64748b;
+:root[data-theme="light"] .secondary-btn {
   background: rgba(15, 23, 42, 0.9);
+  border-color: #64748b;
+  color: #e5e7eb;
 }
 
-.primary-btn:hover,
-.secondary-btn:hover {
-  filter: brightness(1.1);
+/* dark theme buttons */
+:root[data-theme="dark"] .primary-btn {
+  background: #e5e7eb;
+  border-color: #e5e7eb;
+  color: #020617;
 }
 
-/* end screen */
-#end-screen {
-  background: #ffffff;
+:root[data-theme="dark"] .secondary-btn {
+  background: #020617;
+  border-color: #38bdf8;
+  color: #e5e7eb;
 }
+
+/* start button can be tweaked separately if you want */
+:root[data-theme="light"] .start-btn {
+  background: #000000;
+  border-color: #000000;
+  color: #ffffff;
+}
+
+:root[data-theme="dark"] .start-btn {
+  background: #111827;
+  border-color: #e5e7eb;
+  color: #e5e7eb;
+}
+
+:root[data-theme="light"] .primary-btn:hover,
+:root[data-theme="light"] .secondary-btn:hover,
+:root[data-theme="dark"] .primary-btn:hover,
+:root[data-theme="dark"] .secondary-btn:hover {
+  filter: brightness(1.08);
+}
+
+/* end screen (background color is JS-controlled) */
 
 .end-inner {
   display: flex;

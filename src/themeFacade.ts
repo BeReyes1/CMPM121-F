@@ -1,11 +1,10 @@
 import { ThemeAssets } from "./themeAssets";
 
-type ThemeMode = "light" | "dark";
+export type ThemeMode = "light" | "dark";
 type ThemeListener = (mode: ThemeMode) => void;
 
-
 export class ThemeFacade {
-  private static currentMode: ThemeMode = "light"; //defaut
+  private static currentMode: ThemeMode = "light"; // default
   private static listeners: Set<ThemeListener> = new Set();
 
   static get(): ThemeFacade {
@@ -13,9 +12,10 @@ export class ThemeFacade {
   }
 
   static init() {
-    //check window and see if scene matches
     const windowMode = window.matchMedia("(prefers-color-scheme: dark)");
-    this.currentMode = windowMode.matches ? "dark" : "light";
+
+    // Force-run listeners here
+    this.setTheme(windowMode.matches ? "dark" : "light");
 
     windowMode.addEventListener("change", (ev) => {
       this.setTheme(ev.matches ? "dark" : "light");
@@ -25,8 +25,11 @@ export class ThemeFacade {
   static setTheme(targetMode: ThemeMode) {
     this.currentMode = targetMode;
     this.listeners.forEach((listener) => listener(this.currentMode));
+    console.log("Theme is: " + this.currentMode);
+  }
 
-    console.log("Theme is:" + this.currentMode);
+  static getMode(): ThemeMode {
+    return this.currentMode;
   }
 
   static subscribe(listener: ThemeListener): () => void {
@@ -34,10 +37,8 @@ export class ThemeFacade {
     return () => this.listeners.delete(listener);
   }
 
-  //Call this when referencing themed asset, written by copliot
   static getAsset<T extends object>(key: string): T {
-    let currentAsset = ThemeAssets[key][this.currentMode] as T;
-
+    const currentAsset = ThemeAssets[key][this.currentMode] as T;
     const wrapper = Object.create(currentAsset as object) as T;
 
     this.subscribe((mode) => {

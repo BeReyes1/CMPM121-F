@@ -59,16 +59,58 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// hooking up start screen
-const startScreen = document.getElementById("start-screen");
+// hooking up start + end screens
+const startScreen = document.getElementById("start-screen") as
+  | HTMLElement
+  | null;
 const startButton = document.getElementById(
   "start-button",
 ) as HTMLButtonElement | null;
 
+const endScreen = document.getElementById("end-screen") as HTMLElement | null;
+
+// NEW: mode button + end-screen gif
+const modeButton = document.getElementById(
+  "mode-button",
+) as HTMLButtonElement | null;
+const endGif = document.querySelector<HTMLImageElement>(
+  "#end-screen .end-gif",
+);
+
+if (startScreen) startScreen.classList.add("visible");
+if (endScreen) endScreen.classList.remove("visible");
+
+// theme subscriber: update UI + 3D background when theme changes
+ThemeFacade.subscribe((mode) => {
+  document.documentElement.setAttribute("data-theme", mode);
+
+  // end screen gif
+  if (endGif) {
+    endGif.src = mode === "light" ? "/endLight.gif" : "/endDark.gif";
+  }
+
+  if (endScreen) {
+    (endScreen as HTMLElement).style.backgroundColor =
+      mode === "light" ? "#ffffff" : "#000000";
+  }
+
+  // THREE.js background (clear color)
+  renderer.setClearColor(mode === "light" ? 0xffffff : 0x000000, 1);
+});
+
+// mode button click to toggle theme
+if (modeButton) {
+  modeButton.addEventListener("click", () => {
+    const current = ThemeFacade.getMode();
+    const next = current === "light" ? "dark" : "light";
+    ThemeFacade.setTheme(next);
+  });
+}
+
 if (startButton) {
   startButton.addEventListener("click", async () => {
     if (loadingScene) return;
-    startScreen?.classList.add("hidden");
+    startScreen?.classList.remove("visible");
     await loadScene(new Scene1());
   });
 }
@@ -166,4 +208,5 @@ function newGame() {
   localStorage.removeItem("gameSave");
   Inventory.setGameStateInventory({});
   alert("New game started.");
-}
+} 
+
