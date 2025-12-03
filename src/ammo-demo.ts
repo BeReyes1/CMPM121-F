@@ -5,6 +5,7 @@ import { createBoxBody } from "./physics/body-factory";
 import type { Scene } from "./scene";
 import { Inventory } from "./gamestate";
 import { Scene2 } from "./scene2";
+import { ThemeFacade } from "./themeFacade";
 
 export class Scene1 implements Scene {
   physicsWorld: any;
@@ -31,8 +32,13 @@ export class Scene1 implements Scene {
     // Ground
     const groundSize = 50;
     const groundGeometry = new THREE.BoxGeometry(groundSize, 1, groundSize);
-    const groundMat = new THREE.MeshBasicMaterial({ color: 0x888888 });
-    const groundMesh = new THREE.Mesh(groundGeometry, groundMat);
+
+    const groundMesh = new THREE.Mesh(
+      groundGeometry,
+      ThemeFacade.getAsset<THREE.Material>("ground_Material"),
+    );
+
+
     groundMesh.position.set(0, -0.5, 0);
     groundMesh.receiveShadow = true;
     scene.add(groundMesh);
@@ -95,8 +101,8 @@ export class Scene1 implements Scene {
     this.physicsWorld.addRigidBody(barrier.body);
 
     const boxGeometry = new THREE.BoxGeometry(size.x, size.y, size.z);
-    const boxMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+    //const boxMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const boxMesh = new THREE.Mesh(boxGeometry, ThemeFacade.getAsset<THREE.Material>("cube_Material"));
     boxMesh.position.set(posX, posY, posZ);
     this.scene.add(boxMesh);
     this.bodies.push({ mesh: boxMesh, body: barrier.body });

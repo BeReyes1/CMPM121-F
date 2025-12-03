@@ -1,11 +1,12 @@
 import "./style.css";
 
 import * as THREE from "three";
-//import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import type { Scene } from "./scene";
 import { Scene1 } from "./ammo-demo";
 import { Inventory } from "./gamestate";
 import { Localization } from "./localization";
+import { ThemeFacade } from "./themeFacade";
 
 /*
 UNCOMMENT CONTROLS BACK ON WHEN DONE, commented right now just so can use console
@@ -40,7 +41,6 @@ async function loadScene(targetScene: Scene) {
   currentScene.onSaveGame = () => saveGame();
 
   currentScene.onEnter();
-
   loadingScene = false;
   saveGame();
 }
@@ -73,7 +73,7 @@ if (startButton) {
   });
 }
 
-//const controls = new OrbitControls(camera, renderer.domElement);
+const controls = new OrbitControls(camera, renderer.domElement);
 
 const clock = new THREE.Clock();
 
@@ -123,6 +123,7 @@ window.addEventListener("click", (event) => {
 });
 
 loadGame();
+ThemeFacade.init();
 await Localization.initalizeRecord();
 await loadScene(new Scene1());
 
@@ -131,6 +132,7 @@ function animate() {
   requestAnimationFrame(animate);
   const delta = clock.getDelta();
 
+  controls.update();
   if (currentScene && !loadingScene) currentScene.update(delta);
 
   renderer.render(scene, camera);
