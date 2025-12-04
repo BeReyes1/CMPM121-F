@@ -26,15 +26,6 @@ canvas {
   background-image: url("/titleLight.png"); /* default before JS */
 }
 
-/* when ThemeFacade sets data-theme, swaps between light and dark png */
-:root[data-theme="light"] #start-screen {
-  background-image: url("/titleLight.png");
-}
-
-:root[data-theme="dark"] #start-screen {
-  background-image: url("/titleDark.png");
-}
-
 .start-inner {
   display: flex;
   flex-direction: column;

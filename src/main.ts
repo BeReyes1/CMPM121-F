@@ -60,51 +60,48 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 // hooking up start + end screens
-const startScreen = document.getElementById(
-  "start-screen",
-) as HTMLElement | null;
-const startButton = document.getElementById(
-  "start-button",
-) as HTMLButtonElement | null;
+const startScreen = document.getElementById("start-screen") as HTMLElement | null;
+const startButton = document.getElementById("start-button") as HTMLButtonElement | null;
 
 const endScreen = document.getElementById("end-screen") as HTMLElement | null;
+const endText = document.querySelector<HTMLElement>("#end-screen .end-text");
+const endGif = document.querySelector<HTMLImageElement>("#end-screen .end-gif");
 
-const endText = document.querySelector<HTMLElement>(
-  "#end-screen .end-text",
-);
- 
+const restartButton = document.getElementById(
+  "restart-button",
+) as HTMLButtonElement | null;
+
 const languageButton = document.getElementById(
   "language-button",
 ) as HTMLButtonElement | null;
+const modeButton = document.getElementById("mode-button") as HTMLButtonElement | null;
 
-// mode button
-const modeButton = document.getElementById(
-  "mode-button",
-) as HTMLButtonElement | null;
-const endGif = document.querySelector<HTMLImageElement>("#end-screen .end-gif");
-
+// initial overlay state
 if (startScreen) startScreen.classList.add("visible");
 if (endScreen) endScreen.classList.remove("visible");
 
-// theme subscriber: update UI + 3D background when theme changes
+// uses themeAssets 
+const appTheme = ThemeFacade.getAsset<{
+  startBgSrc: string;
+  endGifSrc: string;
+  endBackground: string;
+  clearColor: number;
+  endTextColor: string;
+}>("appTheme");
+
+// whenever the theme changes, update DOM + renderer
 ThemeFacade.subscribe((mode) => {
   document.documentElement.setAttribute("data-theme", mode);
 
-  // end screen gif
-  if (endGif) {
-    endGif.src = mode === "light" ? "/endLight.gif" : "/endDark.gif";
-  }
+  if (startScreen) startScreen.style.backgroundImage = `url(${appTheme.startBgSrc})`;
+  if (endGif) endGif.src = appTheme.endGifSrc;
+  if (endScreen) endScreen.style.backgroundColor = appTheme.endBackground;
+  if (endText) endText.style.color = appTheme.endTextColor;
 
-  if (endScreen) {
-    (endScreen as HTMLElement).style.backgroundColor =
-      mode === "light" ? "#ffffff" : "#000000";
-  }
-
-  // THREE.js background (clear color)
-  renderer.setClearColor(mode === "light" ? 0xffffff : 0x000000, 1);
+  renderer.setClearColor(appTheme.clearColor, 1);
 });
 
-// mode button click to toggle theme
+// button toggle for light/dark
 if (modeButton) {
   modeButton.addEventListener("click", () => {
     const current = ThemeFacade.getMode();
@@ -128,8 +125,12 @@ function applyLocalization() {
   }
 
   if (endText) {
-    endText.textContent = Localization.getText("end_title");
+    endText.textContent = Localization.getText("end_text");
   }
+
+  if (restartButton) {
+    restartButton.textContent = Localization.getText("restart_button");
+}
 }
 
 // LANGUAGES TO CYCLE THROUGH
