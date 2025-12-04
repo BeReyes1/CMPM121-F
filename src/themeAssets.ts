@@ -14,7 +14,7 @@ export const ThemeAssets: ThemedAssetRecord = {
     dark: new THREE.MeshBasicMaterial({ color: 0x111111 }),
   },
   cube_Material: {
-    light: new THREE.MeshBasicMaterial({ color: 0xFF474C }),
-    dark: new THREE.MeshBasicMaterial({ color: 0xFF0000 }),
-  }
+    light: new THREE.MeshBasicMaterial({ color: 0xff474c }),
+    dark: new THREE.MeshBasicMaterial({ color: 0xff0000 }),
+  },
 };

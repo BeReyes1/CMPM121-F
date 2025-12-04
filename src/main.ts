@@ -19,8 +19,7 @@ let loadingScene = false;
 const raycast = new THREE.Raycaster();
 let mousePosition = new THREE.Vector2();
 
-const message = document.createElement("button");
-message.textContent = "Hi";
+let message = Localization.getLocalizedString("start_button");
 
 async function loadScene(targetScene: Scene) {
   loadingScene = true;
@@ -60,9 +59,9 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 // hooking up start + end screens
-const startScreen = document.getElementById("start-screen") as
-  | HTMLElement
-  | null;
+const startScreen = document.getElementById(
+  "start-screen",
+) as HTMLElement | null;
 const startButton = document.getElementById(
   "start-button",
 ) as HTMLButtonElement | null;
@@ -73,9 +72,7 @@ const endScreen = document.getElementById("end-screen") as HTMLElement | null;
 const modeButton = document.getElementById(
   "mode-button",
 ) as HTMLButtonElement | null;
-const endGif = document.querySelector<HTMLImageElement>(
-  "#end-screen .end-gif",
-);
+const endGif = document.querySelector<HTMLImageElement>("#end-screen .end-gif");
 
 if (startScreen) startScreen.classList.add("visible");
 if (endScreen) endScreen.classList.remove("visible");
@@ -140,8 +137,7 @@ window.addEventListener("keydown", (event) => {
     changeLanguage = true;
   }
 
-  if (changeLanguage)
-    console.log("Language changed to: ", Localization.getText("start_button"));
+  if (changeLanguage) console.log("Language changed, new value: ", message());
 });
 
 //TEMP FOR TESTING NEWGAME
@@ -208,5 +204,4 @@ function newGame() {
   localStorage.removeItem("gameSave");
   Inventory.setGameStateInventory({});
   alert("New game started.");
-} 
-
+}

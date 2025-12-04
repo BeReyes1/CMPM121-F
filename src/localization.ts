@@ -22,4 +22,8 @@ export class Localization {
   static getText(key: string): string {
     return this.record[key][this.language];
   }
+
+  static getLocalizedString(key: string): () => string {
+    return () => this.record[key][this.language];
+  }
 }
