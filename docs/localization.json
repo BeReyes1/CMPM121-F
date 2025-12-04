@@ -1,7 +1,22 @@
 {
   "start_button": {
-    "en": "english",
-    "jp": "kanji",
-    "ar": "arabic"
+    "en": "Start",
+    "jp": "スタート",
+    "ar": "ابدأ"
+  },
+  "language_button": {
+    "en": "Current language: English",
+    "jp": "現在の言語:日本語",
+    "ar": "اللغةاللغة الحالية: العربية"
+  },
+  "mode_button": {
+    "en": "Toggle Theme",
+    "jp": "テーマ切替",
+    "ar": "تبديل النمط"
+  },
+  "end_text": {
+    "en": "You managed to escape, but now what?",
+    "jp": "なんとか逃げ切ったが、これからどうする?",
+    "ar": "تمكنت من الهرب، لكن ماذا الآن؟"
   }
 }
