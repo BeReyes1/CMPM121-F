@@ -7,6 +7,7 @@ import { Scene1 } from "./scene1";
 import { Inventory } from "./types/gamestate";
 import { Localization } from "./types/localization";
 import { ThemeFacade } from "./types/themeFacade";
+import type { Language } from "./types/localization"
 
 /*
 UNCOMMENT CONTROLS BACK ON WHEN DONE, commented right now just so can use console
@@ -68,7 +69,15 @@ const startButton = document.getElementById(
 
 const endScreen = document.getElementById("end-screen") as HTMLElement | null;
 
-// NEW: mode button + end-screen gif
+const endText = document.querySelector<HTMLElement>(
+  "#end-screen .end-text",
+);
+ 
+const languageButton = document.getElementById(
+  "language-button",
+) as HTMLButtonElement | null;
+
+// mode button
 const modeButton = document.getElementById(
   "mode-button",
 ) as HTMLButtonElement | null;
@@ -104,6 +113,37 @@ if (modeButton) {
   });
 }
 
+// APPLY LOCALIZATION TO ALL UI
+function applyLocalization() {
+  if (startButton) {
+    startButton.textContent = Localization.getText("start_button");
+  }
+
+  if (modeButton) {
+    modeButton.textContent = Localization.getText("mode_button");
+  }
+
+  if (languageButton) {
+    languageButton.textContent = Localization.getText("language_button");
+  }
+
+  if (endText) {
+    endText.textContent = Localization.getText("end_title");
+  }
+}
+
+// LANGUAGES TO CYCLE THROUGH
+const LANG_ORDER: Language[] = ["en", "jp", "ar"];
+
+// LANGUAGE BUTTON: cycle languages
+if (languageButton) {
+  languageButton.addEventListener("click", () => {
+    const current = Localization.getLanguage();
+    const idx = LANG_ORDER.indexOf(current);
+    const next = LANG_ORDER[(idx + 1) % LANG_ORDER.length];
+    Localization.setLanguage(next);
+  });
+}
 if (startButton) {
   startButton.addEventListener("click", async () => {
     if (loadingScene) return;
@@ -163,6 +203,8 @@ window.addEventListener("click", (event) => {
 loadGame();
 ThemeFacade.init();
 await Localization.initalizeRecord();
+Localization.subscribe(() => applyLocalization());
+applyLocalization();
 await loadScene(new Scene1());
 
 // like update in unity
