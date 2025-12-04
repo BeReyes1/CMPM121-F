@@ -18,5 +18,10 @@
     "en": "You managed to escape, but now what?",
     "jp": "なんとか逃げ切ったが、これからどうする?",
     "ar": "تمكنت من الهرب، لكن ماذا الآن؟"
+  },
+  "restart_button": {
+    "en": "Play Again?",
+    "jp": "もう一度プレイしますか?",
+    "ar": "هل تعزف مرة أخرى؟"
   }
 }
