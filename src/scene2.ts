@@ -3,9 +3,9 @@ import * as THREE from "three";
 import loadAmmo from "./physics/ammo-loader";
 import { createPhysicsWorld } from "./physics/world";
 import { createBoxBody } from "./physics/body-factory";
-import type { Scene } from "./scene";
-import { Inventory } from "./gamestate";
-import { Scene1 } from "./ammo-demo";
+import type { Scene } from "./types/scene";
+import { Inventory } from "./types/gamestate";
+import { Scene1 } from "./scene1";
 
 export class Scene2 implements Scene {
   physicsWorld: any;

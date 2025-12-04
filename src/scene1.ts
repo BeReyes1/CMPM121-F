@@ -2,11 +2,12 @@ import * as THREE from "three";
 import loadAmmo from "./physics/ammo-loader";
 import { createPhysicsWorld } from "./physics/world";
 import { createBoxBody } from "./physics/body-factory";
-import type { Scene } from "./scene";
-import { Inventory } from "./gamestate";
+import type { Scene } from "./types/scene";
+import { Inventory } from "./types/gamestate";
 import { Scene2 } from "./scene2";
-import { ThemeFacade } from "./themeFacade";
+import { ThemeFacade } from "./types/themeFacade";
 
+//#region Implement Scene1
 export class Scene1 implements Scene {
   physicsWorld: any;
   AmmoLib: any;
@@ -28,8 +29,9 @@ export class Scene1 implements Scene {
     const { physicsWorld } = createPhysicsWorld(this.AmmoLib);
     this.physicsWorld = physicsWorld;
     this.scene = scene;
+    //#endregion
 
-    // Ground
+    //#region Ground
     const groundSize = 50;
     const groundGeometry = new THREE.BoxGeometry(groundSize, 1, groundSize);
 
@@ -61,7 +63,9 @@ export class Scene1 implements Scene {
 
     this.makeGoal(0, 0.1, 0, scene);
   }
+  //#endregion
 
+  //#region Player
   createPlayer() {
     const size = 0.5;
 
@@ -87,7 +91,9 @@ export class Scene1 implements Scene {
 
     this.bodies.push({ mesh, body: bodyObj.body });
   }
+  //#endregion
 
+  //#region Barriers
   makeBarrier(posX: number, posY: number, posZ: number) {
     const size = { x: 1, y: 0.5, z: 1 };
     const halfExtents = new this.AmmoLib.btVector3(
@@ -109,7 +115,9 @@ export class Scene1 implements Scene {
     this.scene.add(boxMesh);
     this.bodies.push({ mesh: boxMesh, body: barrier.body });
   }
+  //#endregion
 
+  //#region Goal
   makeGoal(posX: number, posY: number, posZ: number, scene: THREE.Scene) {
     const size = { x: 1, y: 0.5, z: 1 };
     const halfExtents = new this.AmmoLib.btVector3(
@@ -129,6 +137,7 @@ export class Scene1 implements Scene {
     scene.add(boxMesh);
     this.bodies.push({ mesh: boxMesh, body: goal.body });
   }
+  //#endregion
 
   handleMovement = (event: KeyboardEvent) => {
     switch (event.code) {

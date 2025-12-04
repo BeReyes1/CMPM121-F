@@ -2,11 +2,11 @@ import "./style.css";
 
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import type { Scene } from "./scene";
-import { Scene1 } from "./ammo-demo";
-import { Inventory } from "./gamestate";
-import { Localization } from "./localization";
-import { ThemeFacade } from "./themeFacade";
+import type { Scene } from "./types/scene";
+import { Scene1 } from "./scene1";
+import { Inventory } from "./types/gamestate";
+import { Localization } from "./types/localization";
+import { ThemeFacade } from "./types/themeFacade";
 
 /*
 UNCOMMENT CONTROLS BACK ON WHEN DONE, commented right now just so can use console
