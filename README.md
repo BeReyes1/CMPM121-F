@@ -76,11 +76,6 @@ The codebase uses Prettier as before-commit automation which consistently format
 
 We used GitHub Actions to automatically push our changes and deploy our project to GitHub Pages. This method requires us to remove all errors of the code before deployment. Otherwise, it will not push. There were a few moments where we kept unused imports, preventing the page from getting updated and re-published until those errors were resolved.
 
-### Additional features:
-
-- Users are able to swap between light and dark mode using the starting screen buttons.
-- Added localization support for English, Japanese, and Arabic, which can be changed by either the starting screen buttons or associated keybinds ("B" - English, "N" - Japanese, "M" - Arabic) (Note: this unfortunately does not apply to our title, as it is a custom asset that does not translate well)
-
 ## Reflection
 
 Most of our time was spent trying to understand the library enough to meet the requirements for this initial version. We had trouble trying to detect collisions with ammo.js, so we might be looking into using a different physics library. Beckham did most of the engines and tools work on his own this week, so we'll properly discuss a schedule and assign tasks for this coming week to prevent this kind of build up from happening again. (Thank you and sorry, Beckham!)
@@ -118,6 +113,11 @@ The player succeeds when they land the cube on the target area. The cube turns g
 ### Conclusive Game End
 
 When the player collects the key and brings it to scene 2, they will receive a page popup that reads “You Win!” They need the key for the popup to show.
+
+### Additional features:
+
+- Users are able to swap between light and dark mode using the starting screen buttons.
+- Added localization support for English, Japanese, and Arabic, which can be changed by either the starting screen buttons or associated keybinds ("B" - English, "N" - Japanese, "M" - Arabic) (Note: this unfortunately does not apply to our title, as it is a custom asset that does not translate well)
 
 ## Reflection
 
