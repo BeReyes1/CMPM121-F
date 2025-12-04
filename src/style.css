@@ -8,14 +8,14 @@ canvas {
 .overlay {
   position: fixed;
   inset: 0;
-  display: none;              /* default: HIDDEN */
+  display: none; /* default: HIDDEN */
   align-items: center;
   justify-content: center;
   z-index: 10;
 }
 
 .overlay.visible {
-  display: flex;              /* only visible when this class is present */
+  display: flex; /* only visible when this class is present */
 }
 
 /* start screen */

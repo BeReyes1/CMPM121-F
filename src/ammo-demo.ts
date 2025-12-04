@@ -38,7 +38,6 @@ export class Scene1 implements Scene {
       ThemeFacade.getAsset<THREE.Material>("ground_Material"),
     );
 
-
     groundMesh.position.set(0, -0.5, 0);
     groundMesh.receiveShadow = true;
     scene.add(groundMesh);
@@ -102,7 +101,10 @@ export class Scene1 implements Scene {
 
     const boxGeometry = new THREE.BoxGeometry(size.x, size.y, size.z);
     //const boxMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const boxMesh = new THREE.Mesh(boxGeometry, ThemeFacade.getAsset<THREE.Material>("cube_Material"));
+    const boxMesh = new THREE.Mesh(
+      boxGeometry,
+      ThemeFacade.getAsset<THREE.Material>("cube_Material"),
+    );
     boxMesh.position.set(posX, posY, posZ);
     this.scene.add(boxMesh);
     this.bodies.push({ mesh: boxMesh, body: barrier.body });
