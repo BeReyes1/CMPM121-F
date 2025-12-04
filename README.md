@@ -116,7 +116,7 @@ When the player collects the key and brings it to scene 2, they will receive a p
 
 ## Reflection
 
-We had a meeting to discuss next steps for our project and designated tasks for F2 and F3 in the coming week. We have a clearer direction for where we want our game to head, and what each of our roles should be. Beckham and I will continue working on building each level; Kimi will help out with the additional features for F3 as needed, as well as making assets; Vivian will also help with the additional features and debugging. We've identified which bugs need fixing, as well as which four additional features we want to implement for F3: unlimited undo, save system, visual themes, and i18n/l8n.
+We had a meeting to discuss next steps for our project and designated tasks for F2 and F3 in the coming week. We have a clearer direction for where we want our game to head, and what each of our roles should be. Beckham and I will continue working on building each level; Kimi will help out with the additional features for F3 as needed, as well as making assets; Vivian will also help with the additional features and debugging. We've identified which bugs need fixing, as well as which four additional features we want to implement for F3: continuous inventory, save system, visual themes, and i18n/l8n.
 
 ---
 
