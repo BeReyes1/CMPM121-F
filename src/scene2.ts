@@ -6,6 +6,7 @@ import { createBoxBody } from "./physics/body-factory";
 import type { Scene } from "./types/scene";
 import { Inventory } from "./types/gamestate";
 import { Scene1 } from "./scene1";
+import { ThemeFacade } from "./types/themeFacade";
 
 //#region Implement Scene2
 export class Scene2 implements Scene {
@@ -63,7 +64,7 @@ export class Scene2 implements Scene {
     const size = 0.5;
 
     const geometry = new THREE.BoxGeometry(size, size, size);
-    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const material = new THREE.MeshBasicMaterial({ color: 0x0080ff });
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.set(0, 5, 0);
     this.scene.add(mesh);
@@ -99,8 +100,10 @@ export class Scene2 implements Scene {
     this.physicsWorld.addRigidBody(barrier.body);
 
     const boxGeometry = new THREE.BoxGeometry(size.x, size.y, size.z);
-    const boxMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+    const boxMesh = new THREE.Mesh(
+      boxGeometry,
+      ThemeFacade.getAsset<THREE.Material>("barrier_Material"),
+    );
     boxMesh.position.set(posX, posY, posZ);
     this.scene.add(boxMesh);
     this.bodies.push({ mesh: boxMesh, body: barrier.body });

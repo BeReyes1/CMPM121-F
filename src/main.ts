@@ -166,7 +166,8 @@ if (startButton) {
 //#endregion
 
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.enabled = false;
+// TO-DO: uncomment when gameplay is finished
+//controls.enabled = false; // uncomment to lock camera
 
 const clock = new THREE.Clock();
 
@@ -215,6 +216,17 @@ window.addEventListener("click", (event) => {
   if (currentScene) currentScene.onClick(hitObject);
 });
 //#endregion
+
+export interface Box {
+  posX: number;
+  posY: number;
+  posZ: number;
+  sizeX: number;
+  sizeY: number;
+  sizeZ: number;
+  color: THREE.Material;
+  collide: boolean;
+}
 
 //#region Load Game
 loadGame();

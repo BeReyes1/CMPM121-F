@@ -6,6 +6,7 @@ import type { Scene } from "./types/scene";
 import { Inventory } from "./types/gamestate";
 import { Scene2 } from "./scene2";
 import { ThemeFacade } from "./types/themeFacade";
+import type { Box } from "./main";
 
 //#region Implement Scene1
 export class Scene1 implements Scene {
@@ -16,6 +17,49 @@ export class Scene1 implements Scene {
   playerMaterial!: THREE.MeshBasicMaterial;
   goalMesh!: THREE.Mesh;
   bodies: { mesh: THREE.Mesh; body: any }[] = [];
+  //#region Boxes
+  boxParams: Box[] = [
+    {
+      posX: 0,
+      posY: 1,
+      posZ: 10,
+      sizeX: 20,
+      sizeY: 1,
+      sizeZ: 1,
+      color: ThemeFacade.getAsset<THREE.Material>("barrier_Material"),
+      collide: true,
+    },
+    {
+      posX: 0,
+      posY: 1,
+      posZ: -10,
+      sizeX: 20,
+      sizeY: 1,
+      sizeZ: 1,
+      color: ThemeFacade.getAsset<THREE.Material>("barrier_Material"),
+      collide: true,
+    },
+    {
+      posX: 10,
+      posY: 1,
+      posZ: 0,
+      sizeX: 1,
+      sizeY: 1,
+      sizeZ: 21,
+      color: ThemeFacade.getAsset<THREE.Material>("barrier_Material"),
+      collide: true,
+    },
+    {
+      posX: -10,
+      posY: 1,
+      posZ: 0,
+      sizeX: 1,
+      sizeY: 1,
+      sizeZ: 21,
+      color: ThemeFacade.getAsset<THREE.Material>("barrier_Material"),
+      collide: true,
+    },
+  ];
   input = { forward: false, backward: false, left: false, right: false };
   win: boolean = false;
   key: THREE.Mesh | null = null;
@@ -32,7 +76,7 @@ export class Scene1 implements Scene {
     //#endregion
 
     //#region Ground
-    const groundSize = 50;
+    const groundSize = 20;
     const groundGeometry = new THREE.BoxGeometry(groundSize, 1, groundSize);
 
     const groundMesh = new THREE.Mesh(
@@ -40,7 +84,7 @@ export class Scene1 implements Scene {
       ThemeFacade.getAsset<THREE.Material>("ground_Material"),
     );
 
-    groundMesh.position.set(0, -0.5, 0);
+    groundMesh.position.set(0, 0, 0);
     groundMesh.receiveShadow = true;
     scene.add(groundMesh);
 
@@ -50,18 +94,18 @@ export class Scene1 implements Scene {
       0.5,
       groundSize / 2,
     );
-    const groundPos = new this.AmmoLib.btVector3(0, -0.5, 0);
+    const groundPos = new this.AmmoLib.btVector3(0, 0, 0);
     const ground = createBoxBody(this.AmmoLib, groundHalf, groundPos, 0);
     this.physicsWorld.addRigidBody(ground.body);
+    this.bodies.push({ mesh: groundMesh, body: ground.body });
 
     this.createPlayer();
 
-    this.makeBarrier(0, 0.25, -1);
-    this.makeBarrier(0, 0.25, 1);
-    this.makeBarrier(-1, 0.25, 0);
-    this.makeBarrier(1, 0.25, 0);
+    this.boxParams.forEach((box) => {
+      this.makeBox(box);
+    });
 
-    this.makeGoal(0, 0.1, 0, scene);
+    this.makeGoal(0, 0.1, 0);
   }
   //#endregion
 
@@ -70,7 +114,7 @@ export class Scene1 implements Scene {
     const size = 0.5;
 
     const geometry = new THREE.BoxGeometry(size, size, size);
-    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const material = new THREE.MeshBasicMaterial({ color: 0x0080ff });
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.set(0, 5, 0);
     this.scene.add(mesh);
@@ -93,33 +137,37 @@ export class Scene1 implements Scene {
   }
   //#endregion
 
-  //#region Barriers
-  makeBarrier(posX: number, posY: number, posZ: number) {
-    const size = { x: 1, y: 0.5, z: 1 };
+  //#region Boxes/Walls
+  makeBox(boxParams: Box) {
     const halfExtents = new this.AmmoLib.btVector3(
-      size.x / 2,
-      size.y / 2,
-      size.z / 2,
+      boxParams.sizeX,
+      boxParams.sizeY,
+      boxParams.sizeZ,
     );
-    const position = new this.AmmoLib.btVector3(posX, posY, posZ);
+    const position = new this.AmmoLib.btVector3(
+      boxParams.posX,
+      boxParams.posY,
+      boxParams.posZ,
+    );
     const barrier = createBoxBody(this.AmmoLib, halfExtents, position, 0);
     this.physicsWorld.addRigidBody(barrier.body);
 
-    const boxGeometry = new THREE.BoxGeometry(size.x, size.y, size.z);
-    //const boxMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const boxMesh = new THREE.Mesh(
-      boxGeometry,
-      ThemeFacade.getAsset<THREE.Material>("cube_Material"),
+    const boxGeometry = new THREE.BoxGeometry(
+      boxParams.sizeX,
+      boxParams.sizeY,
+      boxParams.sizeZ,
     );
-    boxMesh.position.set(posX, posY, posZ);
+    const boxMesh = new THREE.Mesh(boxGeometry, boxParams.color);
+    boxMesh.position.set(boxParams.posX, boxParams.posY, boxParams.posZ);
     this.scene.add(boxMesh);
-    this.bodies.push({ mesh: boxMesh, body: barrier.body });
+    if (boxParams.collide)
+      this.bodies.push({ mesh: boxMesh, body: barrier.body });
   }
   //#endregion
 
   //#region Goal
-  makeGoal(posX: number, posY: number, posZ: number, scene: THREE.Scene) {
-    const size = { x: 1, y: 0.5, z: 1 };
+  makeGoal(posX: number, posY: number, posZ: number) {
+    const size = { x: 1, y: 1, z: 1 };
     const halfExtents = new this.AmmoLib.btVector3(
       size.x / 2,
       size.y / 2,
@@ -134,8 +182,21 @@ export class Scene1 implements Scene {
     const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
     boxMesh.position.set(posX, posY, posZ);
     this.goalMesh = boxMesh;
-    scene.add(boxMesh);
+    this.scene.add(boxMesh);
     this.bodies.push({ mesh: boxMesh, body: goal.body });
+  }
+  //#endregion
+
+  //#region Key
+  spawnKey() {
+    const geometry = new THREE.BoxGeometry(0.3, 0.5, 0.3);
+    const material = new THREE.MeshBasicMaterial({ color: 0xffff54 });
+
+    this.key = new THREE.Mesh(geometry, material);
+
+    this.key.position.set(8, 1, 0);
+    this.key.userData.type = "Key";
+    this.scene.add(this.key);
   }
   //#endregion
 
@@ -174,6 +235,7 @@ export class Scene1 implements Scene {
     }
   };
 
+  // TO-DO: remove once proper scene switching works
   handleSceneLeave = async (event: KeyboardEvent) => {
     switch (event.code) {
       case "KeyG":
@@ -224,6 +286,7 @@ export class Scene1 implements Scene {
     }
   }
 
+  // TO-DO: remove once event collision is in
   checkWinCondition() {
     if (this.win) return;
 
@@ -241,20 +304,9 @@ export class Scene1 implements Scene {
 
     if (distanceToGoal < 0.5) {
       this.win = true;
-      this.playerMaterial.color.setHex(0x00ff00);
+      //this.playerMaterial.color.setHex(0x00ff00);
       this.spawnKey();
     }
-  }
-
-  spawnKey() {
-    const geometry = new THREE.BoxGeometry(0.3, 0.3, 0.3);
-    const material = new THREE.MeshBasicMaterial({ color: 0x4169e1 });
-
-    this.key = new THREE.Mesh(geometry, material);
-
-    this.key.position.set(10, 0, 0);
-    this.key.userData.type = "Key";
-    this.scene.add(this.key);
   }
 
   applyMovement() {
@@ -282,6 +334,7 @@ export class Scene1 implements Scene {
     body.applyCentralImpulse(impulse);
   }
 
+  // TO-DO: change to on collision
   onClick(hitObject: THREE.Object3D): void {
     if (hitObject.userData.type == "Key") {
       this.scene.remove(hitObject);
