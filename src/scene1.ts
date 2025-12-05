@@ -80,7 +80,7 @@ export class Scene1 implements Scene {
       size / 2,
       size / 2,
     );
-    const position = new this.AmmoLib.btVector3(0, 5, 0);
+    const position = new this.AmmoLib.btVector3(0, , 0);
     const bodyObj = createBoxBody(this.AmmoLib, halfExtents, position, 1);
 
     this.physicsWorld.addRigidBody(bodyObj.body);
@@ -252,7 +252,7 @@ export class Scene1 implements Scene {
 
     this.key = new THREE.Mesh(geometry, material);
 
-    this.key.position.set(0, 2, 0);
+    this.key.position.set(10, 0, 0);
     this.key.userData.type = "Key";
     this.scene.add(this.key);
   }
@@ -265,10 +265,10 @@ export class Scene1 implements Scene {
     const moveSpeed = 0.5;
 
     if (this.input.forward) {
-      impulse.op_add(new this.AmmoLib.btVector3(0, moveSpeed, 0));
+      impulse.op_add(new this.AmmoLib.btVector3(0, 0, -moveSpeed));
     }
     if (this.input.backward) {
-      impulse.op_add(new this.AmmoLib.btVector3(0, -moveSpeed, 0));
+      impulse.op_add(new this.AmmoLib.btVector3(0, 0, moveSpeed));
     }
     if (this.input.left) {
       impulse.op_add(new this.AmmoLib.btVector3(-moveSpeed, 0, 0));
@@ -277,6 +277,8 @@ export class Scene1 implements Scene {
       impulse.op_add(new this.AmmoLib.btVector3(moveSpeed, 0, 0));
     }
 
+    // fix control loss
+    if (!body.isActive()) body.setActivationState(1);
     body.applyCentralImpulse(impulse);
   }
 
