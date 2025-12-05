@@ -30,7 +30,7 @@ export class Localization {
 
   static getText(key: string): string {
     const entry = this.record[key];
-    if (!entry) return key;            // fallback if missing key
+    if (!entry) return key; // fallback if missing key
     return entry[this.language] ?? key; // fallback if missing language
   }
 

@@ -139,6 +139,7 @@ export class Scene1 implements Scene {
   }
   //#endregion
 
+  //#region Functions
   handleMovement = (event: KeyboardEvent) => {
     switch (event.code) {
       case "KeyW":

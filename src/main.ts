@@ -7,7 +7,7 @@ import { Scene1 } from "./scene1";
 import { Inventory } from "./types/gamestate";
 import { Localization } from "./types/localization";
 import { ThemeFacade } from "./types/themeFacade";
-import type { Language } from "./types/localization"
+import type { Language } from "./types/localization";
 
 /*
 UNCOMMENT CONTROLS BACK ON WHEN DONE, commented right now just so can use console
@@ -51,17 +51,21 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000,
 );
-const CAMERA_ZOOM = 4;
-camera.position.z = CAMERA_ZOOM;
+const CAMERA_ZOOM = 15;
+camera.position.y = CAMERA_ZOOM;
 
 const renderer = new THREE.WebGLRenderer();
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// hooking up start + end screens
-const startScreen = document.getElementById("start-screen") as HTMLElement | null;
-const startButton = document.getElementById("start-button") as HTMLButtonElement | null;
+//#region Start/End Screens
+const startScreen = document.getElementById(
+  "start-screen",
+) as HTMLElement | null;
+const startButton = document.getElementById(
+  "start-button",
+) as HTMLButtonElement | null;
 
 const endScreen = document.getElementById("end-screen") as HTMLElement | null;
 const endText = document.querySelector<HTMLElement>("#end-screen .end-text");
@@ -74,13 +78,17 @@ const restartButton = document.getElementById(
 const languageButton = document.getElementById(
   "language-button",
 ) as HTMLButtonElement | null;
-const modeButton = document.getElementById("mode-button") as HTMLButtonElement | null;
+const modeButton = document.getElementById(
+  "mode-button",
+) as HTMLButtonElement | null;
 
 // initial overlay state
 if (startScreen) startScreen.classList.add("visible");
 if (endScreen) endScreen.classList.remove("visible");
+//#endregion
 
-// uses themeAssets 
+//#region Theming
+// uses themeAssets
 const appTheme = ThemeFacade.getAsset<{
   startBgSrc: string;
   endGifSrc: string;
@@ -93,7 +101,8 @@ const appTheme = ThemeFacade.getAsset<{
 ThemeFacade.subscribe((mode) => {
   document.documentElement.setAttribute("data-theme", mode);
 
-  if (startScreen) startScreen.style.backgroundImage = `url(${appTheme.startBgSrc})`;
+  if (startScreen)
+    startScreen.style.backgroundImage = `url(${appTheme.startBgSrc})`;
   if (endGif) endGif.src = appTheme.endGifSrc;
   if (endScreen) endScreen.style.backgroundColor = appTheme.endBackground;
   if (endText) endText.style.color = appTheme.endTextColor;
@@ -109,7 +118,9 @@ if (modeButton) {
     ThemeFacade.setTheme(next);
   });
 }
+//#endregion
 
+//#region Localization
 // APPLY LOCALIZATION TO ALL UI
 function applyLocalization() {
   if (startButton) {
@@ -130,7 +141,7 @@ function applyLocalization() {
 
   if (restartButton) {
     restartButton.textContent = Localization.getText("restart_button");
-}
+  }
 }
 
 // LANGUAGES TO CYCLE THROUGH
@@ -152,11 +163,14 @@ if (startButton) {
     await loadScene(new Scene1());
   });
 }
+//#endregion
 
 const controls = new OrbitControls(camera, renderer.domElement);
+controls.enabled = false;
 
 const clock = new THREE.Clock();
 
+//#region Controls
 //TEST FOR NOW-> ADDING TO INVENTORY
 window.addEventListener("keydown", (event) => {
   if (event.code === "KeyI") {
@@ -200,7 +214,9 @@ window.addEventListener("click", (event) => {
 
   if (currentScene) currentScene.onClick(hitObject);
 });
+//#endregion
 
+//#region Load Game
 loadGame();
 ThemeFacade.init();
 await Localization.initalizeRecord();
@@ -220,7 +236,9 @@ function animate() {
 }
 
 animate();
+//#endregion
 
+//#region Game State Functions
 function saveGame() {
   const gameData = {
     inventory: Inventory.getGameStateInventory(),

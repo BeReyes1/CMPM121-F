@@ -7,6 +7,7 @@ import type { Scene } from "./types/scene";
 import { Inventory } from "./types/gamestate";
 import { Scene1 } from "./scene1";
 
+//#region Implement Scene2
 export class Scene2 implements Scene {
   physicsWorld: any;
   AmmoLib: any;
@@ -28,8 +29,9 @@ export class Scene2 implements Scene {
     const { physicsWorld } = createPhysicsWorld(this.AmmoLib);
     this.physicsWorld = physicsWorld;
     this.scene = scene;
+    //#endregion
 
-    // Ground
+    //#region Ground
     const groundSize = 50;
     const groundGeometry = new THREE.BoxGeometry(groundSize, 1, groundSize);
     const groundMat = new THREE.MeshBasicMaterial({ color: 0x888888 });
@@ -54,7 +56,9 @@ export class Scene2 implements Scene {
     this.makeBarrier(0, 0.25, 1);
     this.makeBarrier(-1, 0.25, 0);
   }
+  //#endregion
 
+  //#region Player
   createPlayer() {
     const size = 0.5;
 
@@ -80,7 +84,9 @@ export class Scene2 implements Scene {
 
     this.bodies.push({ mesh, body: bodyObj.body });
   }
+  //#endregion
 
+  //#region Barrier
   makeBarrier(posX: number, posY: number, posZ: number) {
     const size = { x: 1, y: 0.5, z: 1 };
     const halfExtents = new this.AmmoLib.btVector3(
@@ -99,7 +105,9 @@ export class Scene2 implements Scene {
     this.scene.add(boxMesh);
     this.bodies.push({ mesh: boxMesh, body: barrier.body });
   }
+  //#endregion
 
+  //#region Functions
   handleMovement = (event: KeyboardEvent) => {
     switch (event.code) {
       case "KeyW":
