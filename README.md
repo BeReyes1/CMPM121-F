@@ -100,7 +100,7 @@ The player can click on objects to interact with them. We currently have a key r
 
 ### Carrying Inventory Across Scenes
 
-Player inventory is stored as persistent data in a const Object called “GameState.” GameState currently has a single property which holds items in an array called inventory. When a key is in inventory and the player changes scenes, the player carries their inventory over into the next scene.
+Player inventory is stored as persistent data in a const ``Object``` called ```GameState```. ```GameState``` currently has a single property which holds items in an array called inventory. When a key is in inventory and the player changes scenes, the player carries their inventory over into the next scene.
 
 ### Physics-based Puzzle → Progression
 
@@ -114,14 +114,9 @@ The player succeeds when they land the cube on the target area. The cube turns g
 
 When the player collects the key and brings it to scene 2, they will receive a page popup that reads “You Win!” They need the key for the popup to show.
 
-### Additional features:
-
-- Users are able to swap between light and dark mode using the starting screen buttons.
-- Added localization support for English, Japanese, and Arabic, which can be changed by either the starting screen buttons or associated keybinds ("B" - English, "N" - Japanese, "M" - Arabic) (Note: this unfortunately does not apply to our title, as it is a custom asset that does not translate well)
-
 ## Reflection
 
-We had a meeting to discuss next steps for our project and designated tasks for F2 and F3 in the coming week. We have a clearer direction for where we want our game to head, and what each of our roles should be. Beckham and I will continue working on building each level; Kimi will help out with the additional features for F3 as needed, as well as making assets; Vivian will also help with the additional features and debugging. We've identified which bugs need fixing, as well as which four additional features we want to implement for F3: continuous inventory, save system, visual themes, and i18n/l8n.
+We had a meeting to discuss next steps for our project and designated tasks for F2 and F3 in the coming week. We have a clearer direction for where we want our game to head, and what each of our roles should be. Beckham and I will continue working on building each level; Kimi will help out with the additional features for F3 as needed, as well as making assets; Vivian will also help with the additional features, playtesting, and debugging. We've identified which bugs need fixing, as well as which four additional features we would like to implement for F3: unlimited undo, save system, visual themes, and i18n/l8n.
 
 ---
 
