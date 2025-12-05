@@ -17,6 +17,10 @@ export const ThemeAssets: ThemedAssetRecord = {
     light: new THREE.MeshBasicMaterial({ color: 0xdddddd }),
     dark: new THREE.MeshBasicMaterial({ color: 0x1b1b1b }),
   },
+  text_Material: {
+    light: new THREE.MeshBasicMaterial({ color: 0x8c8c8c }),
+    dark: new THREE.MeshBasicMaterial({ color: 0x8c8c8c }),
+  },
 
   //for end screen
   appTheme: {

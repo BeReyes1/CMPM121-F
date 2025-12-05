@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import loadAmmo from "./physics/ammo-loader";
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { createPhysicsWorld } from "./physics/world";
 import { createBoxBody } from "./physics/body-factory";
 import type { Scene } from "./types/scene";
@@ -7,6 +8,7 @@ import { Inventory } from "./types/gamestate";
 import { Scene2 } from "./scene2";
 import { ThemeFacade } from "./types/themeFacade";
 import type { Box } from "./main";
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
 
 //#region Implement Scene1
 export class Scene1 implements Scene {
@@ -106,6 +108,14 @@ export class Scene1 implements Scene {
     });
 
     this.makeGoal(0, 0.1, 0);
+
+    const loader = new FontLoader();
+    const font = await loader.loadAsync( 'node_modules/three/examples/fonts/helvetiker_regular.typeface.json' );
+    const words = new TextGeometry("Test", {
+      font: font
+    });
+    const wordMesh = new THREE.Mesh(words, ThemeFacade.getAsset<THREE.Material>("text_Material"));
+    scene.add( wordMesh );
   }
   //#endregion
 
