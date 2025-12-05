@@ -80,7 +80,7 @@ export class Scene1 implements Scene {
       size / 2,
       size / 2,
     );
-    const position = new this.AmmoLib.btVector3(0, , 0);
+    const position = new this.AmmoLib.btVector3(0, 0, 0);
     const bodyObj = createBoxBody(this.AmmoLib, halfExtents, position, 1);
 
     this.physicsWorld.addRigidBody(bodyObj.body);
