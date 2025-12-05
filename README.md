@@ -118,6 +118,37 @@ When the player collects the key and brings it to scene 2, they will receive a p
 
 We had a meeting to discuss next steps for our project and designated tasks for F2 and F3 in the coming week. We have a clearer direction for where we want our game to head, and what each of our roles should be. Beckham and I will continue working on building each level; Kimi will help out with the additional features for F3 as needed, as well as making assets; Vivian will also help with the additional features, playtesting, and debugging. We've identified which bugs need fixing, as well as which four additional features we would like to implement for F3: unlimited undo, save system, visual themes, and i18n/l8n.
 
+—
+
+# Devlog #4 - 12/04/2025
+
+## Requirements
+
+
+### Continuous Inventory
+
+We chose continuous inventory because we already had a working inventory system, so this seemed easy to implement.
+The inventory system is a public class. It has functions to add and remove ```InventoryItems```. ```InventoryItem``` is a defined type that has a quantity value. This allows our inventory to carry multiples of an inventory item if needed. An example of this in action was___
+
+### Save System
+
+We chose the save system as we had familiarity with it from D3.
+There are three functions in particular: ```save()```, ```load()```, and ```newGame()```. Saving the game saves the player’s inventory to the localStorage API. This allows ```load()``` to access it and set the inventory to the save inventory when reloading the game. We put these functions in ```main()``` which means for scenes to access it a workaround was done via having an event fired in the scene and this allowed ```main()``` to read the event and save the game. We probably could have made this its own public class but this is what was made for now.
+
+### Visual Themes
+
+We chose to implement visual themes as we thought it would add some polish to our project.
+The light/dark mode of assets was created using the __Facade pattern__. The ```ThemeFacade``` class keeps track of the user’s screen and when it changes to light/dark mode an event is fired. Assets that need to use the script call ```getAsset()``` and pass in the key name . The keys are defined in a ```Record``` named ```ThemeAssets```. There is the key and the two asset types: light and dark. The ```Record``` is generic as it takes a type ```T``` allowing objects to define materials or textures instead of just one type. This method of switching themes allowed us to easily swap out themes for our title and end screens, both of which have separated, custom assets for each theme.
+
+### i18n/l8n
+
+We chose to implement this feature because internationalization and localization seemed like a fun challenge to tackle. Additionally, we would be allowing our game to a wider audience which is a positive. We’ve implemented language support for English, Japanese, and Arabic. The language settings can be changed either in the menu buttons, or through the associated keybinds as follows: “B” for English, “N” for Japanese, and “M” for Arabic. *Unfortunately, we’re unable to translate our title screen as it is a custom asset which does not translate well to other languages due to being a portmanteau.*
+Localization was implemented via the ```Localization``` class. ```Localization``` holds a ```Record``` with a unique type ```Language``` which holds one of our three languages. We have a JSON file with a key and the three languages that text will be in. All we developers need to do is call the localization script with the key we want to get the correct text or to set the language. In ```main.ts```, a variable for the text must be initialized and calls the ```getLanguage()``` function, which references the translations listed in the JSON.
+
+## Reflection
+
+We pivoted from unlimited undo to continuous inventory since it was closer to our inventory system and thus easier to implement than creating an entirely new undo system from scratch. 
+
 ---
 
 # Dev Commands
