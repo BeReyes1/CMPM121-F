@@ -23,5 +23,20 @@
     "en": "Play Again?",
     "jp": "もう一度プレイしますか?",
     "ar": "هل تعزف مرة أخرى؟"
+  },
+  "tutorial": {
+    "en": "Use WASD to move",
+    "jp": "WASDを使って移動する",
+    "ar": "استخدم WASD للتحرك"
+  },
+  "key_get": {
+    "en": "Key Obtained",
+    "jp": "鍵を取得しました",
+    "ar": "تم الحصول على المفتاح"
+  },
+  "win_message": {
+    "en": "You Won",
+    "jp": "勝ちました",
+    "ar": "لقد فزت"
   }
 }

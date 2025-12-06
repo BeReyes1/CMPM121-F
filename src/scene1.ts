@@ -111,10 +111,15 @@ export class Scene1 implements Scene {
 
     const loader = new FontLoader();
     const font = await loader.loadAsync( 'node_modules/three/examples/fonts/helvetiker_regular.typeface.json' );
-    const words = new TextGeometry("Test", {
-      font: font
+    //const font = await loader.loadAsync( 'public/mplus-msdf.json' );
+    const words = new TextGeometry("wasd", {
+      font: font,
+      size: 2,
+      depth: .5
     });
     const wordMesh = new THREE.Mesh(words, ThemeFacade.getAsset<THREE.Material>("text_Material"));
+    wordMesh.rotation.x = -Math.PI / 2;
+    wordMesh.position.set( 0, 1 , -6)
     scene.add( wordMesh );
   }
   //#endregion
