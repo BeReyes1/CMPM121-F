@@ -18,5 +18,30 @@
     "en": "Play Again?",
     "jp": "もう一度プレイしますか?",
     "ar": "هل تعزف مرة أخرى؟"
+  },
+  "level_button": {
+    "en": "Level Select",
+    "jp": "レベル選択",
+    "ar": "اختيار المستوى"
+  },
+  "level_select_title": {
+    "en": "Select Level",
+    "jp": "レベルを選択",
+    "ar": "اختر المستوى"
+  },
+  "level1_button": {
+    "en": "Level 1",
+    "jp": "レベル1",
+    "ar": "المستوى 1"
+  },
+  "level2_button": {
+    "en": "Level 2",
+    "jp": "レベル2",
+    "ar": "المستوى 2"
+  },
+  "back_button": {
+    "en": "Back",
+    "jp": "戻る",
+    "ar": "رجوع"
   }
 }

@@ -5,19 +5,26 @@
     <link rel="icon" type="image/svg+xml" href="/CMPM121-F/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>three</title>
-    <script
-      type="module"
-      crossorigin
-      src="/CMPM121-F/assets/index-Cw7aMQ7p.js"
-    ></script>
-    <link
-      rel="stylesheet"
-      crossorigin
-      href="/CMPM121-F/assets/index-BptXbaQ7.css"
-    />
+    <script type="module" crossorigin src="/CMPM121-F/assets/index-CvaVLnTC.js"></script>
+    <link rel="stylesheet" crossorigin href="/CMPM121-F/assets/index-D1pi4XDk.css">
   </head>
   <body>
     <div id="app"></div>
+
+    <div id="ui-text" style="
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 28px;
+    font-family: sans-serif;
+    pointer-events: none;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.6);   
+    padding: 10px 20px;             
+    border-radius: 8px;         
+    "></div>
 
     <!--start screen-->
     <div id="start-screen" class="overlay visible">
@@ -25,6 +32,19 @@
         <div class="overlay-buttons">
           <button id="start-button" class="primary-btn start-btn">Start</button>
           <button id="language-button" class="secondary-btn">Language</button>
+          <button id="level-button" class="secondary-btn">Level Select</button>
+        </div>
+      </div>
+    </div>
+
+    <!--level select screen-->
+    <div id="level-select-screen" class="overlay">
+      <div class="overlay-inner level-inner">
+        <p class="level-title">Select Level</p>
+        <div class="overlay-buttons">
+          <button id="level1-button" class="primary-btn">Level 1</button>
+          <button id="level2-button" class="primary-btn">Level 2</button>
+          <button id="level-back-button" class="secondary-btn">Back</button>
         </div>
       </div>
     </div>
@@ -37,5 +57,6 @@
         <button id="restart-button" class="primary-btn">Play Again</button>
       </div>
     </div>
+
   </body>
 </html>
