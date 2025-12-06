@@ -14,7 +14,6 @@ export class Scene1 implements Scene {
   AmmoLib: any;
   playerMesh!: THREE.Mesh;
   playerBody!: any;
-  playerMaterial!: THREE.MeshBasicMaterial;
   goalMesh!: THREE.Mesh;
   bodies: { mesh: THREE.Mesh; body: any }[] = [];
   //#region Boxes
@@ -107,7 +106,7 @@ export class Scene1 implements Scene {
       this.makeBox(box);
     });
 
-    this.makeGoal(0, 0.1, 0);
+    this.makeGoal();
   }
   //#endregion Ground
 
@@ -143,7 +142,6 @@ export class Scene1 implements Scene {
     this.physicsWorld.addRigidBody(bodyObj.body);
 
     this.playerMesh = mesh;
-    this.playerMaterial = material;
     this.playerBody = bodyObj.body;
 
     this.bodies.push({ mesh, body: bodyObj.body });
@@ -179,24 +177,18 @@ export class Scene1 implements Scene {
   //#endregion Boxes
 
   //#region Goal
-  makeGoal(posX: number, posY: number, posZ: number) {
-    const size = { x: 1, y: 1, z: 1 };
-    const halfExtents = new this.AmmoLib.btVector3(
-      size.x / 2,
-      size.y / 2,
-      size.z / 2,
-    );
-    const position = new this.AmmoLib.btVector3(posX, posY, posZ);
-    const goal = createBoxBody(this.AmmoLib, halfExtents, position, 0);
-    this.physicsWorld.addRigidBody(goal.body);
-
-    const boxGeometry = new THREE.BoxGeometry(size.x, size.y, size.z);
-    const boxMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
-    boxMesh.position.set(posX, posY, posZ);
-    this.goalMesh = boxMesh;
-    this.scene.add(boxMesh);
-    this.bodies.push({ mesh: boxMesh, body: goal.body });
+  goalParams: Box = {
+    posX: 0,
+    posY: 0.1,
+    posZ: 0,
+    sizeX: 1,
+    sizeY: 1,
+    sizeZ: 1,
+    color: new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
+    collide: true,
+  };
+  makeGoal() {
+    this.goalMesh = this.makeBox(this.goalParams);
   }
   //#endregion Goal
 
@@ -211,13 +203,14 @@ export class Scene1 implements Scene {
     color: new THREE.MeshBasicMaterial({ color: 0xffff54 }),
     collide: false,
   };
+
   spawnKey() {
     this.key = this.makeBox(this.keyParams);
     this.key.userData.type = "Key";
   }
   //#endregion Key
 
-  //#region Functions
+  //#region Keybinds
   handleMovement = (event: KeyboardEvent) => {
     switch (event.code) {
       case "KeyW":
@@ -251,8 +244,10 @@ export class Scene1 implements Scene {
         break;
     }
   };
+  //#endregion Keybinds
 
-  // TO-DO: remove once proper scene switching works
+  //#region Functions
+  // TO-DO: remove once event collision is in
   handleSceneLeave = async (event: KeyboardEvent) => {
     switch (event.code) {
       case "KeyG":
@@ -278,6 +273,7 @@ export class Scene1 implements Scene {
     this.physicsWorld.stepSimulation(delta, 10);
     this.updateMotion();
 
+    // TO-DO: remove once event collision is in
     this.checkWinCondition();
   }
 
