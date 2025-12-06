@@ -15,6 +15,8 @@ export class Scene1 implements Scene {
   playerBody!: any;
   goalMesh!: THREE.Mesh;
   bodies: { mesh: THREE.Mesh; body: any }[] = [];
+  falseChests: THREE.Mesh[] = [];
+  trueChest!: THREE.Mesh;
   input = { forward: false, backward: false, left: false, right: false };
   win: boolean = false;
   key: THREE.Mesh | null = null;
@@ -35,6 +37,7 @@ export class Scene1 implements Scene {
     this.makeGoal();
     this.makeFalseChests();
     this.makeTrueChest();
+    this.makeKey();
   }
 
   //#region Make Box
@@ -228,7 +231,15 @@ export class Scene1 implements Scene {
     ];
 
     params.forEach((chest) => {
-      this.makeBox(chest);
+      this.falseChests.push(this.makeBox(chest));
+    });
+  }
+
+  private handleFalseChestEvent() {
+    this.falseChests.forEach((chest) => {
+      if (!this.win && this.isNear(this.playerMesh, chest, 1.0)) {
+        // TO-DO: insert "no luck!" text here
+      }
     });
   }
   //#endregion False Chests
@@ -245,7 +256,14 @@ export class Scene1 implements Scene {
       color: new THREE.MeshBasicMaterial({ color: 0x7f6040 }),
       collide: true,
     };
-    const body = this.makeBox(params);
+    this.trueChest = this.makeBox(params);
+  }
+
+  private handleTrueChestEvent() {
+    if (!this.win && this.isNear(this.playerMesh, this.trueChest, 1.0)) {
+      // TO-DO: insert "key acquired!" text here
+      this.scene.add(this.key!);
+    }
   }
   //#endregion True Chest
 
@@ -282,9 +300,8 @@ export class Scene1 implements Scene {
   }
 
   private handleGoalKeyEvents() {
-    if (!this.win && this.isNear(this.playerMesh, this.goalMesh, 0.5)) {
-      this.win = true;
-      this.scene.add(this.key!);
+    if (!this.keyPickedUp && this.isNear(this.playerMesh, this.goalMesh, 0.5)) {
+      // TO-DO: if no key and on goal, insert "need a key!" text here
     }
 
     if (this.key && this.isNear(this.playerMesh, this.key, 0.5)) {
@@ -342,7 +359,6 @@ export class Scene1 implements Scene {
   //#endregion Keybinds
 
   //#region Functions
-  // TO-DO: remove once event collision is in
   handleSceneLeave = () => {
     this.onSceneLeave?.(new Scene2());
   };
@@ -362,6 +378,8 @@ export class Scene1 implements Scene {
     this.physicsWorld.stepSimulation(delta, 10);
     this.updateMotion();
 
+    this.handleFalseChestEvent();
+    this.handleTrueChestEvent();
     this.handleGoalKeyEvents();
   }
 
