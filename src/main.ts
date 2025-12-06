@@ -40,6 +40,12 @@ async function loadScene(targetScene: Scene) {
   currentScene.onSceneLeave = (newScene) => loadScene(newScene);
   currentScene.onSaveGame = () => saveGame();
 
+  currentScene.onGameComplete = () => {
+    if (endScreen) {
+      endScreen.classList.add("visible");
+    }
+  };
+
   currentScene.onEnter();
   loadingScene = false;
   saveGame();
@@ -78,9 +84,6 @@ const restartButton = document.getElementById(
 const languageButton = document.getElementById(
   "language-button",
 ) as HTMLButtonElement | null;
-const modeButton = document.getElementById(
-  "mode-button",
-) as HTMLButtonElement | null;
 
 // initial overlay state
 if (startScreen) startScreen.classList.add("visible");
@@ -109,15 +112,6 @@ ThemeFacade.subscribe((mode) => {
 
   renderer.setClearColor(appTheme.clearColor, 1);
 });
-
-// button toggle for light/dark
-if (modeButton) {
-  modeButton.addEventListener("click", () => {
-    const current = ThemeFacade.getMode();
-    const next = current === "light" ? "dark" : "light";
-    ThemeFacade.setTheme(next);
-  });
-}
 //#endregion
 
 //#region Localization
@@ -125,10 +119,6 @@ if (modeButton) {
 function applyLocalization() {
   if (startButton) {
     startButton.textContent = Localization.getText("start_button");
-  }
-
-  if (modeButton) {
-    modeButton.textContent = Localization.getText("mode_button");
   }
 
   if (languageButton) {
