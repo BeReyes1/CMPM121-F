@@ -32,8 +32,7 @@ export class Scene1 implements Scene {
     this.scene = scene;
 
     //#region Ground
-    const groundParams: Box = 
-    {
+    const groundParams: Box = {
       posX: 0,
       posY: 0,
       posZ: 0,
@@ -49,50 +48,50 @@ export class Scene1 implements Scene {
 
     //#region Walls
     const wallParams: Box[] = [
-    {
-      posX: 0,
-      posY: 1,
-      posZ: 10,
-      sizeX: 20,
-      sizeY: 1,
-      sizeZ: 1,
-      mass: 0,
-      color: this.barrierMaterial,
-      collide: true,
-    },
-    {
-      posX: 0,
-      posY: 1,
-      posZ: -10,
-      sizeX: 20,
-      sizeY: 1,
-      sizeZ: 1,
-      mass: 0,
-      color: this.barrierMaterial,
-      collide: true,
-    },
-    {
-      posX: 10,
-      posY: 1,
-      posZ: 0,
-      sizeX: 1,
-      sizeY: 1,
-      sizeZ: 21,
-      mass: 0,
-      color: this.barrierMaterial,
-      collide: true,
-    },
-    {
-      posX: -10,
-      posY: 1,
-      posZ: 0,
-      sizeX: 1,
-      sizeY: 1,
-      sizeZ: 21,
-      mass: 0,
-      color: this.barrierMaterial,
-      collide: true,
-    },
+      {
+        posX: 0,
+        posY: 1,
+        posZ: 10,
+        sizeX: 20,
+        sizeY: 1,
+        sizeZ: 1,
+        mass: 0,
+        color: this.barrierMaterial,
+        collide: true,
+      },
+      {
+        posX: 0,
+        posY: 1,
+        posZ: -10,
+        sizeX: 20,
+        sizeY: 1,
+        sizeZ: 1,
+        mass: 0,
+        color: this.barrierMaterial,
+        collide: true,
+      },
+      {
+        posX: 10,
+        posY: 1,
+        posZ: 0,
+        sizeX: 1,
+        sizeY: 1,
+        sizeZ: 21,
+        mass: 0,
+        color: this.barrierMaterial,
+        collide: true,
+      },
+      {
+        posX: -10,
+        posY: 1,
+        posZ: 0,
+        sizeX: 1,
+        sizeY: 1,
+        sizeZ: 21,
+        mass: 0,
+        color: this.barrierMaterial,
+        collide: true,
+      },
     ];
     wallParams.forEach((wall) => {
       this.makeBox(wall);
@@ -149,7 +148,7 @@ export class Scene1 implements Scene {
 
   createPlayer() {
     //this.playerMesh = this.makeBox(this.playerParams);
-    
+
     const size = 0.5;
 
     const geometry = new THREE.BoxGeometry(size, size, size);
@@ -172,23 +171,22 @@ export class Scene1 implements Scene {
     this.playerBody = bodyObj.body;
 
     this.bodies.push({ mesh, body: bodyObj.body });
-    
   }
   //#endregion Player
 
   //#region Goal
   makeGoal() {
-  const goalParams: Box = {
-    posX: 0,
-    posY: 0.1,
-    posZ: 0,
-    sizeX: 1,
-    sizeY: 1,
-    sizeZ: 1,
-    mass: 0,
-    color: new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
-    collide: true,
-  };
+    const goalParams: Box = {
+      posX: 0,
+      posY: 0.1,
+      posZ: 0,
+      sizeX: 1,
+      sizeY: 1,
+      sizeZ: 1,
+      mass: 0,
+      color: new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
+      collide: true,
+    };
     this.goalMesh = this.makeBox(goalParams);
   }
   //#endregion Goal
@@ -227,7 +225,7 @@ export class Scene1 implements Scene {
   }
 
   private handleGoalKeyEvents() {
-    if(!this.win &&this.isNear(this.playerMesh, this.goalMesh, 0.5)) {
+    if (!this.win && this.isNear(this.playerMesh, this.goalMesh, 0.5)) {
       this.win = true;
       this.spawnKey();
     }
@@ -241,11 +239,15 @@ export class Scene1 implements Scene {
     }
   }
 
-  private isNear(a: THREE.Object3D, b: THREE.Object3D, threshold: number): boolean {
+  private isNear(
+    a: THREE.Object3D,
+    b: THREE.Object3D,
+    threshold: number,
+  ): boolean {
     return a.position.distanceTo(b.position) < threshold;
   }
   //#endregion key collision
-  
+
   //#region Keybinds
   handleMovement = (event: KeyboardEvent) => {
     switch (event.code) {
@@ -328,28 +330,6 @@ export class Scene1 implements Scene {
       );
     }
   }
-
-  // TO-DO: remove once event collision is in
-  /*checkWinCondition() {
-    if (this.win) return;
-
-    const playerX = this.playerMesh.position.x;
-    const playerY = this.playerMesh.position.y;
-    const playerZ = this.playerMesh.position.z;
-
-    const goalX = this.goalMesh.position.x;
-    const goalY = this.goalMesh.position.y;
-    const goalZ = this.goalMesh.position.z;
-
-    const distanceToGoal = Math.sqrt(
-      (playerX - goalX) ** 2 + (playerY - goalY) ** 2 + (playerZ - goalZ) ** 2,
-    );
-
-    if (distanceToGoal < 0.5) {
-      this.win = true;
-      this.spawnKey();
-    }
-  }*/
 
   applyMovement() {
     const body = this.playerBody;
