@@ -73,6 +73,26 @@ const startButton = document.getElementById(
   "start-button",
 ) as HTMLButtonElement | null;
 
+const levelButton = document.getElementById(
+  "level-button",
+) as HTMLButtonElement | null;
+
+const levelSelectScreen = document.getElementById(
+  "level-select-screen",
+) as HTMLElement | null;
+const levelTitle = document.querySelector<HTMLElement>(
+  "#level-select-screen .level-title",
+);
+const level1Button = document.getElementById(
+  "level1-button",
+) as HTMLButtonElement | null;
+const level2Button = document.getElementById(
+  "level2-button",
+) as HTMLButtonElement | null;
+const levelBackButton = document.getElementById(
+  "level-back-button",
+) as HTMLButtonElement | null;
+
 const endScreen = document.getElementById("end-screen") as HTMLElement | null;
 const endText = document.querySelector<HTMLElement>("#end-screen .end-text");
 const endGif = document.querySelector<HTMLImageElement>("#end-screen .end-gif");
@@ -88,6 +108,7 @@ const languageButton = document.getElementById(
 // initial overlay state
 if (startScreen) startScreen.classList.add("visible");
 if (endScreen) endScreen.classList.remove("visible");
+if (levelSelectScreen) levelSelectScreen.classList.remove("visible");
 //#endregion
 
 //#region Theming
@@ -106,6 +127,8 @@ ThemeFacade.subscribe((mode) => {
 
   if (startScreen)
     startScreen.style.backgroundImage = `url(${appTheme.startBgSrc})`;
+  if (levelSelectScreen)
+    levelSelectScreen.style.backgroundImage = appTheme.endBackground;
   if (endGif) endGif.src = appTheme.endGifSrc;
   if (endScreen) endScreen.style.backgroundColor = appTheme.endBackground;
   if (endText) endText.style.color = appTheme.endTextColor;
@@ -132,6 +155,26 @@ function applyLocalization() {
   if (restartButton) {
     restartButton.textContent = Localization.getText("restart_button");
   }
+
+  if (levelButton) {
+    levelButton.textContent = Localization.getText("level_button");
+  }
+
+  if (levelTitle) {
+    levelTitle.textContent = Localization.getText("level_select_title");
+  }
+
+  if (level1Button) {
+    level1Button.textContent = Localization.getText("level1_button");
+  }
+
+  if (level2Button) {
+    level2Button.textContent = Localization.getText("level2_button");
+  }
+
+  if (levelBackButton) {
+    levelBackButton.textContent = Localization.getText("back_button");
+  }
 }
 
 // LANGUAGES TO CYCLE THROUGH
@@ -151,6 +194,37 @@ if (startButton) {
     if (loadingScene) return;
     startScreen?.classList.remove("visible");
     await loadScene(new Scene1());
+  });
+}
+
+if (levelButton) {
+  levelButton.addEventListener("click", () => {
+    if (!levelSelectScreen) return;
+    startScreen?.classList.remove("visible");
+    levelSelectScreen.classList.add("visible");
+  });
+}
+
+if (level1Button) {
+  level1Button.addEventListener("click", async () => {
+    if (loadingScene) return;
+    levelSelectScreen?.classList.remove("visible");
+    await loadScene(new Scene1());
+  });
+}
+
+if (level2Button) {
+  level2Button.addEventListener("click", async () => {
+    if (loadingScene) return;
+    levelSelectScreen?.classList.remove("visible");
+    //await loadScene(new Scene2());
+  });
+}
+
+if (levelBackButton) {
+  levelBackButton.addEventListener("click", () => {
+    levelSelectScreen?.classList.remove("visible");
+    startScreen?.classList.add("visible");
   });
 }
 //#endregion
@@ -221,7 +295,7 @@ ThemeFacade.init();
 await Localization.initalizeRecord();
 Localization.subscribe(() => applyLocalization());
 applyLocalization();
-await loadScene(new Scene1());
+//await loadScene(new Scene1());
 
 // like update in unity
 function animate() {

@@ -113,6 +113,46 @@ canvas {
 :root[data-theme="dark"] .secondary-btn:hover {
   filter: brightness(1.08);
 }
+/* inner card for level select – small and centered */
+#level-select-screen .level-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+
+  background: rgba(15, 23, 42, 0.9);
+  padding: 16px 24px;
+  border-radius: 16px;
+  box-shadow: 0 40px 40px rgba(0, 0, 0, 0.5);
+
+  width: min(140px, 30vw); 
+}
+
+
+.level-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 0px;
+  color: #e5e7eb;
+}
+
+/* center the buttons inside the box */
+#level-select-screen .primary-btn,
+#level-select-screen .secondary-btn {
+  margin-left: 50px;
+}
+
+/* add space between title and first button */
+#level-select-screen #level1-button {
+  margin-top: -90px;
+}
+
+/* tighten vertical spacing between the level buttons */
+#level-select-screen #level1-button,
+#level-select-screen #level2-button,
+#level-select-screen #level-back-button {
+  margin-bottom: 0px;
+}
 
 /* end screen (background color is JS-controlled) */
 
