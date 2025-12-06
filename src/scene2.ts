@@ -4,12 +4,10 @@ import { createPhysicsWorld } from "./physics/world";
 import { createBoxBody } from "./physics/body-factory";
 import type { Scene } from "./types/scene";
 import { Inventory } from "./types/gamestate";
-import { Scene1 } from "./scene1";
+import { Scene3 } from "./scene3";
 import { ThemeFacade } from "./types/themeFacade";
 import type { Box } from "./main";
 //import { Localization } from "./types/localization";
-
-//scene 3-> CAN SKIP IT IF HAVE ENOUGH INVENTORY ITEM
 
 export class Scene2 implements Scene {
   physicsWorld: any;
@@ -489,7 +487,7 @@ export class Scene2 implements Scene {
   //#region Functions
   handleSceneLeave = () => {
     //scene3
-    this.onSceneLeave?.(new Scene1());
+    this.onSceneLeave?.(new Scene3());
   };
 
   onEnter(): void {
@@ -565,7 +563,8 @@ export class Scene2 implements Scene {
     }
 
     if (hitObject.userData.type == "Collectable") {
-      Inventory.addItem("Collectable", 0.25);
+      const coinValue = 0.2 + Math.random() * (0.75 - 0.2);
+      Inventory.addItem("Collectable", coinValue);
       this.scene.remove(hitObject);
       this.onSaveGame?.();
     }
