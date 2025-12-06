@@ -4,12 +4,13 @@ import { createPhysicsWorld } from "./physics/world";
 import { createBoxBody } from "./physics/body-factory";
 import type { Scene } from "./types/scene";
 import { Inventory } from "./types/gamestate";
-import { Scene2 } from "./scene2";
 import { ThemeFacade } from "./types/themeFacade";
 import type { Box } from "./main";
 //import { Localization } from "./types/localization";
 
-export class Scene1 implements Scene {
+//scene 3-> NEED A CERTAIN AMOUNT OF COINS TO BREAK BARRIER AND WIN
+
+export class Scene3 implements Scene {
   physicsWorld: any;
   AmmoLib: any;
   playerMesh!: THREE.Mesh;
@@ -46,7 +47,6 @@ export class Scene1 implements Scene {
     this.makeFalseChests();
     this.makeTrueChest();
     this.makeKey();
-    this.makeCollectable();
   }
 
   //#region Make Box
@@ -209,8 +209,8 @@ export class Scene1 implements Scene {
     const params: Box[] = [
       {
         posX: 0,
-        posY: 1,
-        posZ: 5,
+        posY: -1,
+        posZ: -5,
         sizeX: 1,
         sizeY: 1,
         sizeZ: 1,
@@ -218,7 +218,7 @@ export class Scene1 implements Scene {
         collide: true,
       },
       {
-        posX: 0,
+        posX: 2,
         posY: 1,
         posZ: -5,
         sizeX: 1,
@@ -228,9 +228,39 @@ export class Scene1 implements Scene {
         collide: true,
       },
       {
-        posX: 5,
+        posX: 8,
         posY: 1,
         posZ: 0,
+        sizeX: 1,
+        sizeY: 1,
+        sizeZ: 1,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 5,
+        posY: 1,
+        posZ: 8,
+        sizeX: 1,
+        sizeY: 1,
+        sizeZ: 1,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 7,
+        posY: 1,
+        posZ: 4,
+        sizeX: 1,
+        sizeY: 1,
+        sizeZ: 1,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 9,
+        posY: 1,
+        posZ: 1,
         sizeX: 1,
         sizeY: 1,
         sizeZ: 1,
@@ -258,9 +288,9 @@ export class Scene1 implements Scene {
   //#region True Chest
   makeTrueChest() {
     const params: Box = {
-      posX: -5,
+      posX: -8,
       posY: 1,
-      posZ: 0,
+      posZ: 9,
       sizeX: 1,
       sizeY: 1,
       sizeZ: 1,
@@ -271,7 +301,7 @@ export class Scene1 implements Scene {
   }
 
   private handleTrueChestEvent() {
-    if (this.key != null && !this.win && this.isNear(this.playerMesh, this.trueChest, 1.0)) {
+    if (!this.win && this.key != null && this.isNear(this.playerMesh, this.trueChest, 1.0)) {
       this.uiText.textContent = "Key acquired!";
       // TO-DO: insert "key acquired!" text here
       this.scene.add(this.key!);
@@ -282,9 +312,9 @@ export class Scene1 implements Scene {
   //#region Key
   makeKey() {
     const keyParams: Box = {
-      posX: 8,
+      posX: -8,
       posY: 1,
-      posZ: 0,
+      posZ: 8,
       sizeX: 0.3,
       sizeY: 0.5,
       sizeZ: 0.3,
@@ -296,47 +326,6 @@ export class Scene1 implements Scene {
     this.key.userData.type = "Key";
   }
   //#endregion Key
-
-  makeCollectable() {
-    const color = new THREE.MeshBasicMaterial({ color: 0xFFA500 });
-    const params: Box[] = [
-      {
-        posX: 0,
-        posY: 1,
-        posZ: 2,
-        sizeX: 0.2,
-        sizeY: 0.2,
-        sizeZ: 0.2,
-        color: color,
-        collide: true,
-      },
-      {
-        posX: 1,
-        posY: 1,
-        posZ: 5,
-        sizeX: 0.2,
-        sizeY: 0.2,
-        sizeZ: 0.2,
-        color: color,
-        collide: true,
-      },
-      {
-        posX: 2,
-        posY: 1,
-        posZ: 1,
-        sizeX: 0.2,
-        sizeY: 0.2,
-        sizeZ: 0.2,
-        color: color,
-        collide: true,
-      },
-    ];
-
-    params.forEach((collectable) => {
-      const c = this.makeBox(collectable);
-      c.userData.type = "Collectable";
-    });
-  }
 
   //#region Key Collision
   private keyPickedUp = false;
@@ -415,7 +404,7 @@ export class Scene1 implements Scene {
 
   //#region Functions
   handleSceneLeave = () => {
-    this.onSceneLeave?.(new Scene2());
+    //this.onSceneLeave?.(new Scene1());
   };
 
   onEnter(): void {
@@ -488,12 +477,6 @@ export class Scene1 implements Scene {
   onCollect(hitObject: THREE.Object3D): void {
     if (hitObject.userData.type == "Key") {
       this.pickupKey(hitObject);
-    }
-
-    if (hitObject.userData.type == "Collectable") {
-      Inventory.addItem("Collectable", 0.25);
-      this.scene.remove(hitObject);
-      this.onSaveGame?.();
     }
   }
 }

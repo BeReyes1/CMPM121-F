@@ -4,14 +4,11 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import type { Scene } from "./types/scene";
 import { Scene1 } from "./scene1";
+import { Scene2 } from "./scene2";
 import { Inventory } from "./types/gamestate";
 import { Localization } from "./types/localization";
 import { ThemeFacade } from "./types/themeFacade";
 import type { Language } from "./types/localization";
-
-/*
-UNCOMMENT CONTROLS BACK ON WHEN DONE, commented right now just so can use console
-*/
 
 const scene = new THREE.Scene();
 let currentScene!: Scene;
@@ -217,7 +214,7 @@ if (level2Button) {
   level2Button.addEventListener("click", async () => {
     if (loadingScene) return;
     levelSelectScreen?.classList.remove("visible");
-    //await loadScene(new Scene2());
+    await loadScene(new Scene2());
   });
 }
 
