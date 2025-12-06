@@ -230,6 +230,10 @@ export class Scene2 implements Scene {
     if (!body.isActive()) body.setActivationState(1);
     body.applyCentralImpulse(impulse);
   }
-
-  onClick(_hitObject: THREE.Object3D): void {}
+  
+  onCollect(hitObject: THREE.Object3D): void {
+    if (hitObject.userData.type == "Key") {
+      this.pickupKey(hitObject);
+    }
+  }
 }

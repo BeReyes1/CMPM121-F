@@ -172,23 +172,18 @@ window.addEventListener("keydown", (event) => {
 
 window.addEventListener("keydown", (event) => {
   let changeLanguage: boolean = false;
-  if (event.code === "KeyB") {
-    Localization.setLanguage("en");
-    changeLanguage = true;
-  } else if (event.code === "KeyN") {
-    Localization.setLanguage("jp");
-    changeLanguage = true;
-  } else if (event.code == "KeyM") {
-    Localization.setLanguage("ar");
-    changeLanguage = true;
+  if (event.code === "KeyL") {
+    const current = Localization.getLanguage();
+    const idx = LANG_ORDER.indexOf(current);
+    const next = LANG_ORDER[(idx + 1) % LANG_ORDER.length];
+    Localization.setLanguage(next);
   }
-
   if (changeLanguage) console.log("Language changed, new value: ", message());
 });
 
 //TEMP FOR TESTING NEWGAME
 window.addEventListener("keydown", (event) => {
-  if (event.code === "KeyL") newGame();
+  if (event.code === "KeyN") newGame();
 });
 
 window.addEventListener("click", (event) => {
@@ -203,7 +198,7 @@ window.addEventListener("click", (event) => {
 
   const hitObject = raycastHits[0].object;
 
-  if (currentScene) currentScene.onClick(hitObject);
+  if (currentScene) currentScene.onCollect(hitObject);
 });
 //#endregion
 
@@ -215,6 +210,7 @@ export interface Box {
   sizeX: number;
   sizeY: number;
   sizeZ: number;
+  mass: number;
   color: THREE.Material;
   collide: boolean;
 }
