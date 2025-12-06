@@ -491,7 +491,8 @@ export class Scene1 implements Scene {
     }
 
     if (hitObject.userData.type == "Collectable") {
-      Inventory.addItem("Collectable", 0.25);
+      const coinValue = 0.2 + Math.random() * (0.75 - 0.2);
+      Inventory.addItem("Collectable", coinValue);
       this.scene.remove(hitObject);
       this.onSaveGame?.();
     }

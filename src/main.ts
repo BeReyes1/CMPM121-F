@@ -5,6 +5,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import type { Scene } from "./types/scene";
 import { Scene1 } from "./scene1";
 import { Scene2 } from "./scene2";
+import { Scene3 } from "./scene3";
 import { Inventory } from "./types/gamestate";
 import { Localization } from "./types/localization";
 import { ThemeFacade } from "./types/themeFacade";
@@ -86,6 +87,10 @@ const level1Button = document.getElementById(
 const level2Button = document.getElementById(
   "level2-button",
 ) as HTMLButtonElement | null;
+const level3Button = document.getElementById(
+  "level3-button",
+) as HTMLButtonElement | null;
+
 const levelBackButton = document.getElementById(
   "level-back-button",
 ) as HTMLButtonElement | null;
@@ -169,6 +174,10 @@ function applyLocalization() {
     level2Button.textContent = Localization.getText("level2_button");
   }
 
+  if (level3Button) {
+    level3Button.textContent = Localization.getText("level3_button")
+  }
+
   if (levelBackButton) {
     levelBackButton.textContent = Localization.getText("back_button");
   }
@@ -217,6 +226,15 @@ if (level2Button) {
     await loadScene(new Scene2());
   });
 }
+
+if (level3Button) {
+  level3Button.addEventListener("click", async () => {
+    if (loadingScene) return;
+    levelSelectScreen?.classList.remove("visible");
+    await loadScene(new Scene3());
+  });
+}
+
 
 if (levelBackButton) {
   levelBackButton.addEventListener("click", () => {

@@ -150,6 +150,7 @@ canvas {
 /* tighten vertical spacing between the level buttons */
 #level-select-screen #level1-button,
 #level-select-screen #level2-button,
+#level-select-screen #level3-button,
 #level-select-screen #level-back-button {
   margin-bottom: 0px;
 }
