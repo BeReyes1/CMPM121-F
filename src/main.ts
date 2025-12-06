@@ -210,7 +210,6 @@ export interface Box {
   sizeX: number;
   sizeY: number;
   sizeZ: number;
-  mass: number;
   color: THREE.Material;
   collide: boolean;
 }
