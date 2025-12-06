@@ -100,7 +100,7 @@ The player can click on objects to interact with them. We currently have a key r
 
 ### Carrying Inventory Across Scenes
 
-Player inventory is stored as persistent data in a const ``Object``` called ```GameState```. ```GameState``` currently has a single property which holds items in an array called inventory. When a key is in inventory and the player changes scenes, the player carries their inventory over into the next scene.
+Player inventory is stored as persistent data in a const ```Object``` called ```GameState```. ```GameState``` currently has a single property which holds items in an array called inventory. When a key is in inventory and the player changes scenes, the player carries their inventory over into the next scene.
 
 ### Physics-based Puzzle → Progression
 
