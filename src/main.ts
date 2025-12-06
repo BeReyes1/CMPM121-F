@@ -207,6 +207,7 @@ window.addEventListener("click", (event) => {
 });
 //#endregion
 
+//#region Box
 export interface Box {
   posX: number;
   posY: number;
@@ -217,6 +218,7 @@ export interface Box {
   color: THREE.Material;
   collide: boolean;
 }
+//#endregion
 
 //#region Load Game
 loadGame();

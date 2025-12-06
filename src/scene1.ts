@@ -18,6 +18,8 @@ export class Scene1 implements Scene {
   goalMesh!: THREE.Mesh;
   bodies: { mesh: THREE.Mesh; body: any }[] = [];
   //#region Boxes
+  barrierMaterial: THREE.Material =
+    ThemeFacade.getAsset<THREE.Material>("barrier_Material");
   boxParams: Box[] = [
     {
       posX: 0,
@@ -26,7 +28,7 @@ export class Scene1 implements Scene {
       sizeX: 20,
       sizeY: 1,
       sizeZ: 1,
-      color: ThemeFacade.getAsset<THREE.Material>("barrier_Material"),
+      color: this.barrierMaterial,
       collide: true,
     },
     {
@@ -36,7 +38,7 @@ export class Scene1 implements Scene {
       sizeX: 20,
       sizeY: 1,
       sizeZ: 1,
-      color: ThemeFacade.getAsset<THREE.Material>("barrier_Material"),
+      color: this.barrierMaterial,
       collide: true,
     },
     {
@@ -46,7 +48,7 @@ export class Scene1 implements Scene {
       sizeX: 1,
       sizeY: 1,
       sizeZ: 21,
-      color: ThemeFacade.getAsset<THREE.Material>("barrier_Material"),
+      color: this.barrierMaterial,
       collide: true,
     },
     {
@@ -56,10 +58,11 @@ export class Scene1 implements Scene {
       sizeX: 1,
       sizeY: 1,
       sizeZ: 21,
-      color: ThemeFacade.getAsset<THREE.Material>("barrier_Material"),
+      color: this.barrierMaterial,
       collide: true,
     },
   ];
+  //#endregion Boxes
   input = { forward: false, backward: false, left: false, right: false };
   win: boolean = false;
   key: THREE.Mesh | null = null;
@@ -73,16 +76,15 @@ export class Scene1 implements Scene {
     const { physicsWorld } = createPhysicsWorld(this.AmmoLib);
     this.physicsWorld = physicsWorld;
     this.scene = scene;
-    //#endregion
+    //#endregion Scene1
 
     //#region Ground
     const groundSize = 20;
     const groundGeometry = new THREE.BoxGeometry(groundSize, 1, groundSize);
+    const groundMaterial: THREE.Material =
+      ThemeFacade.getAsset<THREE.Material>("ground_Material");
 
-    const groundMesh = new THREE.Mesh(
-      groundGeometry,
-      ThemeFacade.getAsset<THREE.Material>("ground_Material"),
-    );
+    const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
 
     groundMesh.position.set(0, 0, 0);
     groundMesh.receiveShadow = true;
@@ -107,9 +109,20 @@ export class Scene1 implements Scene {
 
     this.makeGoal(0, 0.1, 0);
   }
-  //#endregion
+  //#endregion Ground
 
   //#region Player
+  playerParams: Box = {
+    posX: 0,
+    posY: 5,
+    posZ: 0,
+    sizeX: 0.5,
+    sizeY: 0.5,
+    sizeZ: 0.5,
+    color: new THREE.MeshBasicMaterial({ color: 0x0080ff }),
+    collide: true,
+  };
+
   createPlayer() {
     const size = 0.5;
 
@@ -135,35 +148,35 @@ export class Scene1 implements Scene {
 
     this.bodies.push({ mesh, body: bodyObj.body });
   }
-  //#endregion
+  //#endregion Player
 
-  //#region Boxes/Walls
+  //#region Boxes
   makeBox(boxParams: Box) {
     const halfExtents = new this.AmmoLib.btVector3(
-      boxParams.sizeX,
-      boxParams.sizeY,
-      boxParams.sizeZ,
+      boxParams.sizeX / 2,
+      boxParams.sizeY / 2,
+      boxParams.sizeZ / 2,
     );
     const position = new this.AmmoLib.btVector3(
       boxParams.posX,
       boxParams.posY,
       boxParams.posZ,
     );
-    const barrier = createBoxBody(this.AmmoLib, halfExtents, position, 0);
-    this.physicsWorld.addRigidBody(barrier.body);
-
     const boxGeometry = new THREE.BoxGeometry(
       boxParams.sizeX,
       boxParams.sizeY,
       boxParams.sizeZ,
     );
+
+    const barrier = createBoxBody(this.AmmoLib, halfExtents, position, 0);
+    if (boxParams.collide) this.physicsWorld.addRigidBody(barrier.body);
     const boxMesh = new THREE.Mesh(boxGeometry, boxParams.color);
     boxMesh.position.set(boxParams.posX, boxParams.posY, boxParams.posZ);
     this.scene.add(boxMesh);
-    if (boxParams.collide)
-      this.bodies.push({ mesh: boxMesh, body: barrier.body });
+    this.bodies.push({ mesh: boxMesh, body: barrier.body });
+    return boxMesh;
   }
-  //#endregion
+  //#endregion Boxes
 
   //#region Goal
   makeGoal(posX: number, posY: number, posZ: number) {
@@ -185,20 +198,24 @@ export class Scene1 implements Scene {
     this.scene.add(boxMesh);
     this.bodies.push({ mesh: boxMesh, body: goal.body });
   }
-  //#endregion
+  //#endregion Goal
 
   //#region Key
+  keyParams: Box = {
+    posX: 8,
+    posY: 1,
+    posZ: 0,
+    sizeX: 0.3,
+    sizeY: 0.5,
+    sizeZ: 0.3,
+    color: new THREE.MeshBasicMaterial({ color: 0xffff54 }),
+    collide: false,
+  };
   spawnKey() {
-    const geometry = new THREE.BoxGeometry(0.3, 0.5, 0.3);
-    const material = new THREE.MeshBasicMaterial({ color: 0xffff54 });
-
-    this.key = new THREE.Mesh(geometry, material);
-
-    this.key.position.set(8, 1, 0);
+    this.key = this.makeBox(this.keyParams);
     this.key.userData.type = "Key";
-    this.scene.add(this.key);
   }
-  //#endregion
+  //#endregion Key
 
   //#region Functions
   handleMovement = (event: KeyboardEvent) => {
@@ -304,7 +321,6 @@ export class Scene1 implements Scene {
 
     if (distanceToGoal < 0.5) {
       this.win = true;
-      //this.playerMaterial.color.setHex(0x00ff00);
       this.spawnKey();
     }
   }
@@ -343,3 +359,4 @@ export class Scene1 implements Scene {
     }
   }
 }
+//#endregion Functions
