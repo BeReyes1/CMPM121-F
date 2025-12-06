@@ -7,6 +7,7 @@ import { Inventory } from "./types/gamestate";
 import { Scene2 } from "./scene2";
 import { ThemeFacade } from "./types/themeFacade";
 import type { Box } from "./main";
+//import { Localization } from "./types/localization";
 
 export class Scene1 implements Scene {
   physicsWorld: any;
@@ -21,6 +22,7 @@ export class Scene1 implements Scene {
   win: boolean = false;
   key: THREE.Mesh | null = null;
   scene!: THREE.Scene;
+  uiText : any;
 
   onSceneLeave?: (targetScene: Scene) => void;
   onSaveGame?: () => void;
@@ -30,6 +32,12 @@ export class Scene1 implements Scene {
     const { physicsWorld } = createPhysicsWorld(this.AmmoLib);
     this.physicsWorld = physicsWorld;
     this.scene = scene;
+
+    this.uiText = document.getElementById("ui-text")!;
+    this.uiText.style.top = "";
+
+    this.uiText.style.bottom = "20px";
+  this.uiText.textContent = "WASD To Move";
 
     this.makeGround();
     this.makeWalls();
@@ -238,6 +246,8 @@ export class Scene1 implements Scene {
   private handleFalseChestEvent() {
     this.falseChests.forEach((chest) => {
       if (!this.win && this.isNear(this.playerMesh, chest, 1.0)) {
+        const uiText = document.getElementById("ui-text")!;
+        uiText.textContent = "No luck!";
         // TO-DO: insert "no luck!" text here
       }
     });
@@ -261,6 +271,7 @@ export class Scene1 implements Scene {
 
   private handleTrueChestEvent() {
     if (!this.win && this.isNear(this.playerMesh, this.trueChest, 1.0)) {
+      this.uiText.textContent = "Key acquired!";
       // TO-DO: insert "key acquired!" text here
       this.scene.add(this.key!);
     }
@@ -301,6 +312,8 @@ export class Scene1 implements Scene {
 
   private handleGoalKeyEvents() {
     if (!this.keyPickedUp && this.isNear(this.playerMesh, this.goalMesh, 0.5)) {
+      this.uiText.textContent = "Need a key!";
+      console.log("need key");
       // TO-DO: if no key and on goal, insert "need a key!" text here
     }
 
