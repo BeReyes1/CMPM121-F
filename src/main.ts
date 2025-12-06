@@ -18,7 +18,6 @@ let loadingScene = false;
 const raycast = new THREE.Raycaster();
 let mousePosition = new THREE.Vector2();
 
-let message = Localization.getLocalizedString("start_button");
 
 async function loadScene(targetScene: Scene) {
   loadingScene = true;
@@ -40,6 +39,7 @@ async function loadScene(targetScene: Scene) {
 
   currentScene.onGameComplete = () => {
     if (endScreen) {
+      console.log("Win!");
       endScreen.classList.add("visible");
     }
   };
@@ -242,23 +242,23 @@ if (levelBackButton) {
     startScreen?.classList.add("visible");
   });
 }
+
+if (restartButton) {
+  restartButton.addEventListener("click", () => {
+    newGame();
+    endScreen?.classList.remove("visible");
+    startScreen?.classList.add("visible");
+  });
+}
 //#endregion
 
 const controls = new OrbitControls(camera, renderer.domElement);
-// TO-DO: uncomment when gameplay is finished
-//controls.enabled = false; // uncomment to lock camera
+controls.enabled = false; 
 
 const clock = new THREE.Clock();
 
 //#region Controls
-//TEST FOR NOW-> ADDING TO INVENTORY
-window.addEventListener("keydown", (event) => {
-  if (event.code === "KeyI") {
-    Inventory.addItem("test_item", 1);
-    saveGame();
-  }
-});
-
+/*
 window.addEventListener("keydown", (event) => {
   let changeLanguage: boolean = false;
   if (event.code === "KeyL") {
@@ -268,12 +268,7 @@ window.addEventListener("keydown", (event) => {
     Localization.setLanguage(next);
   }
   if (changeLanguage) console.log("Language changed, new value: ", message());
-});
-
-//TEMP FOR TESTING NEWGAME
-window.addEventListener("keydown", (event) => {
-  if (event.code === "KeyN") newGame();
-});
+});*/
 
 window.addEventListener("click", (event) => {
   mousePosition = new THREE.Vector2(
@@ -310,7 +305,6 @@ ThemeFacade.init();
 await Localization.initalizeRecord();
 Localization.subscribe(() => applyLocalization());
 applyLocalization();
-//await loadScene(new Scene1());
 
 // like update in unity
 function animate() {

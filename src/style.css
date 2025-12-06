@@ -54,20 +54,6 @@ canvas {
   margin-right: 60px;
 }
 
-/* button styles
-.primary-btn,
-.secondary-btn {
-  min-width: 180px;
-  padding: 10px 18px;
-  border-radius: 999px;
-  font-size: 16px;
-  cursor: pointer;
-  border-width: 1px;
-  border-style: solid;
-  transition: filter 0.15s ease, background-color 0.15s ease, color 0.15s ease,
-    border-color 0.15s ease;
-}
-
 /* light theme buttons */
 :root[data-theme="light"] .primary-btn {
   background: #000000;

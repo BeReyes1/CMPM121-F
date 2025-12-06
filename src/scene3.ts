@@ -6,9 +6,7 @@ import type { Scene } from "./types/scene";
 import { Inventory } from "./types/gamestate";
 import { ThemeFacade } from "./types/themeFacade";
 import type { Box } from "./main";
-//import { Localization } from "./types/localization";
-
-//scene 3-> NEED A CERTAIN AMOUNT OF COINS TO BREAK BARRIER AND WIN
+import { Localization } from "./types/localization";
 
 export class Scene3 implements Scene {
   physicsWorld: any;
@@ -27,10 +25,11 @@ export class Scene3 implements Scene {
   barrierMeshes: THREE.Mesh[] = [];
   barrierBodies: any[] = [];
   barrierOpen = false;
-  collectableCount : number = 4.5
+  collectableCount : number = 0.5
 
   onSceneLeave?: (targetScene: Scene) => void;
   onSaveGame?: () => void;
+  onGameComplete?: (() => void) | undefined;
 
   async init(scene: THREE.Scene): Promise<void> {
     this.AmmoLib = await loadAmmo();
@@ -42,7 +41,7 @@ export class Scene3 implements Scene {
     this.uiText.style.top = "";
 
     this.uiText.style.bottom = "20px";
-    this.uiText.textContent = "WASD To Move";
+    this.uiText.textContent = Localization.getText("controls");
 
     this.makeGround();
     this.makeWalls();
@@ -152,22 +151,6 @@ export class Scene3 implements Scene {
   //#endregion Walls
 
   //#region Player
-  /*
-  // use for refactoring player to makeBox but need to address issues controlling player
-  // may need to do with mass which is 1 while all other boxes are 0
-  playerParams: Box = {
-    posX: 0,
-    posY: 5,
-    posZ: 0,
-    sizeX: 0.5,
-    sizeY: 0.5,
-    sizeZ: 0.5,
-    color: new THREE.MeshBasicMaterial({ color: 0x0080ff }),
-    collide: true,
-  };
-  this.playerMesh = this.makeBox(this.playerParams);
-  */
-
   makePlayer() {
     const size = 0.5;
     const geometry = new THREE.BoxGeometry(size, size, size);
@@ -368,8 +351,7 @@ export class Scene3 implements Scene {
     this.falseChests.forEach((chest) => {
       if (!this.win && this.isNear(this.playerMesh, chest, 1.0)) {
         const uiText = document.getElementById("ui-text")!;
-        uiText.textContent = "No luck!";
-        // TO-DO: insert "no luck!" text here
+        uiText.textContent = Localization.getText("incorrect_chest");
       }
     });
   }
@@ -405,15 +387,14 @@ export class Scene3 implements Scene {
   if (itemCount >= this.collectableCount) {
     this.openBarrier();
   } else {
-    this.uiText.textContent = "Need more coins!";
+    this.uiText.textContent = Localization.getText("need_more_coins");
   }
 }
 
 private openBarrier() {
   this.barrierOpen = true;
-  this.uiText.textContent = "Bank opened!";
+  this.uiText.textContent = Localization.getText("bank_opened");
 
-  // Remove barrier meshes + physics bodies
   for (let i = 0; i < this.barrierMeshes.length; i++) {
     this.scene.remove(this.barrierMeshes[i]);
     this.physicsWorld.removeRigidBody(this.barrierBodies[i]);
@@ -429,8 +410,7 @@ private openBarrier() {
 
   private handleTrueChestEvent() {
     if (!this.win && this.key != null && this.isNear(this.playerMesh, this.trueChest, 1.0)) {
-      this.uiText.textContent = "Key acquired!";
-      // TO-DO: insert "key acquired!" text here
+      this.uiText.textContent = Localization.getText("key_acquired");
       this.scene.add(this.key!);
     }
   }
@@ -537,9 +517,6 @@ private openBarrier() {
       color: color,
       collide: true,
     },
-
-    // ⭐ NEW 5 COLLECTABLES BELOW (same formatting) ⭐
-
     {
       posX: -3,
       posY: 1,
@@ -614,9 +591,7 @@ private openBarrier() {
 
   private handleGoalKeyEvents() {
     if (!this.keyPickedUp && this.isNear(this.playerMesh, this.goalMesh, 0.5)) {
-      this.uiText.textContent = "Need a key!";
-      console.log("need key");
-      // TO-DO: if no key and on goal, insert "need a key!" text here
+      this.uiText.textContent = Localization.getText("need_key");
     }
 
     if (this.key && this.isNear(this.playerMesh, this.key, 0.5)) {
@@ -675,7 +650,7 @@ private openBarrier() {
 
   //#region Functions
   handleSceneLeave = () => {
-    //this.onSceneLeave?.(new Scene1());
+    this.onGameComplete?.();
   };
 
   onEnter(): void {

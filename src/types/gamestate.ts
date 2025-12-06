@@ -1,6 +1,7 @@
 //PERSISTENT DATA ACROSS SCENES
 export const GameState = {
   inventory: {} as Record<string, InventoryItem>,
+  levelKeys: {} as Record<string, boolean>,
 };
 
 export class Inventory {
@@ -38,3 +39,29 @@ type InventoryItem = {
   quantity: number;
   //max?
 };
+
+export class LevelKeys {
+  static getGameStateKeys(): Record<string, boolean> {
+    return GameState.levelKeys;
+  }
+
+  static getAll(): Record<string, boolean> {
+    return GameState.levelKeys;
+  }
+
+  static setAll(keys: Record<string, boolean>) {
+    GameState.levelKeys = keys || {};
+  }
+
+  static setKey(key: string, value: boolean = true) {
+    GameState.levelKeys[key] = value;
+  }
+
+  static hasKey(key: string): boolean {
+    return !!GameState.levelKeys[key];
+  }
+
+  static removeKey(key: string) {
+    delete GameState.levelKeys[key];
+  }
+}
