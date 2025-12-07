@@ -118,7 +118,7 @@ When the player collects the key and brings it to scene 2, they will receive a p
 
 We had a meeting to discuss next steps for our project and designated tasks for F2 and F3 in the coming week. We have a clearer direction for where we want our game to head, and what each of our roles should be. Beckham and I will continue working on building each level; Kimi will help out with the additional features for F3 as needed, as well as making assets; Vivian will also help with the additional features, playtesting, and debugging. We've identified which bugs need fixing, as well as which four additional features we would like to implement for F3: unlimited undo, save system, visual themes, and i18n/l8n.
 
-—
+---
 
 # Devlog #4 - 12/04/2025
 
@@ -147,7 +147,6 @@ Localization was implemented via the `Localization` class. `Localization` holds 
 ## Reflection
 
 We pivoted from unlimited undo to continuous inventory since it was closer to our inventory system and thus easier to implement than creating an entirely new undo system from scratch. The other three systems went pretty smoothly so a pivot was never considered. There were a few things that we couldn't accomplish. We couldn't get custom assets in the game itself other than things like the logo and end gif. We also couldn't do much playtesting due to features taking to long to be made. But, we were able to fix a few bugs that we found from playtesting it from previous versions of the game.
-
 
 ---
 

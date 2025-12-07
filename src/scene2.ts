@@ -4,10 +4,10 @@ import { createPhysicsWorld } from "./physics/world";
 import { createBoxBody } from "./physics/body-factory";
 import type { Scene } from "./types/scene";
 import { Inventory } from "./types/gamestate";
-import { Scene3 } from "./scene3";
 import { ThemeFacade } from "./types/themeFacade";
 import type { Box } from "./main";
 import { Localization } from "./types/localization";
+import { Scene3 } from "./scene3";
 
 export class Scene2 implements Scene {
   physicsWorld: any;
@@ -23,9 +23,15 @@ export class Scene2 implements Scene {
   key: THREE.Mesh | null = null;
   scene!: THREE.Scene;
   uiText: any;
+  barrierMeshes: THREE.Mesh[] = [];
+  barrierBodies: any[] = [];
+  barrierOpen = false;
+  coinCount: number = 5.5;
+  coinBodies: THREE.Mesh[] = [];
 
   onSceneLeave?: (targetScene: Scene) => void;
   onSaveGame?: () => void;
+  onGameComplete?: (() => void) | undefined;
 
   async init(scene: THREE.Scene): Promise<void> {
     this.AmmoLib = await loadAmmo();
@@ -46,7 +52,7 @@ export class Scene2 implements Scene {
     this.makeFalseChests();
     this.makeTrueChest();
     this.makeKey();
-    this.makeCollectable();
+    this.makeCoins();
   }
 
   //#region Make Box
@@ -313,7 +319,8 @@ export class Scene2 implements Scene {
   }
   //#endregion Key
 
-  makeCollectable() {
+  //#region Coin
+  makeCoins() {
     const color = new THREE.MeshBasicMaterial({ color: 0xffa500 });
     const params: Box[] = [
       {
@@ -388,11 +395,25 @@ export class Scene2 implements Scene {
       },
     ];
 
-    params.forEach((collectable) => {
-      const c = this.makeBox(collectable);
-      c.userData.type = "Collectable";
+    params.forEach((coin) => {
+      const c = this.makeBox(coin);
+      c.userData.type = "Coin";
+      this.coinBodies.push(c);
     });
   }
+
+  private handleCoinEvent() {
+    this.coinBodies.forEach((coin) => {
+      if (this.isNear(this.playerMesh, coin, 1.0)) {
+        const coinValue = 0.1 * Math.floor(Math.random() * 10);
+        Inventory.addItem("Coin", coinValue);
+        this.scene.remove(coin);
+        this.coinBodies = this.coinBodies.filter((aCoin) => aCoin !== coin);
+        this.onSaveGame?.();
+      }
+    });
+  }
+  //#endregion Coin
 
   //#region Key Collision
   private keyPickedUp = false;
@@ -420,14 +441,6 @@ export class Scene2 implements Scene {
     if (this.keyPickedUp && this.isNear(this.playerMesh, this.goalMesh, 1.0)) {
       this.handleSceneLeave();
     }
-  }
-
-  private isNear(
-    a: THREE.Object3D,
-    b: THREE.Object3D,
-    threshold: number,
-  ): boolean {
-    return a.position.distanceTo(b.position) < threshold;
   }
   //#endregion Key Collision
 
@@ -469,7 +482,6 @@ export class Scene2 implements Scene {
 
   //#region Functions
   handleSceneLeave = () => {
-    //scene3
     this.onSceneLeave?.(new Scene3());
   };
 
@@ -491,6 +503,7 @@ export class Scene2 implements Scene {
     this.handleFalseChestEvent();
     this.handleTrueChestEvent();
     this.handleGoalKeyEvents();
+    this.handleCoinEvent();
   }
 
   updateMotion() {
@@ -540,14 +553,22 @@ export class Scene2 implements Scene {
     body.applyCentralImpulse(impulse);
   }
 
+  private isNear(
+    a: THREE.Object3D,
+    b: THREE.Object3D,
+    threshold: number,
+  ): boolean {
+    return a.position.distanceTo(b.position) < threshold;
+  }
+
   onCollect(hitObject: THREE.Object3D): void {
     if (hitObject.userData.type == "Key") {
       this.pickupKey(hitObject);
     }
 
-    if (hitObject.userData.type == "Collectable") {
-      const coinValue = 0.2 + Math.random() * (0.75 - 0.2);
-      Inventory.addItem("Collectable", coinValue);
+    if (hitObject.userData.type == "Coin") {
+      const coinValue = 0.1 * Math.floor(Math.random() * 10);
+      Inventory.addItem("Coin", coinValue);
       this.scene.remove(hitObject);
       this.onSaveGame?.();
     }

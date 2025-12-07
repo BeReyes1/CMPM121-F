@@ -38,7 +38,7 @@ async function loadScene(targetScene: Scene) {
 
   currentScene.onGameComplete = () => {
     if (endScreen) {
-      console.log("Win!");
+      //console.log("Win!");
       endScreen.classList.add("visible");
     }
   };
@@ -313,7 +313,7 @@ function saveGame() {
   };
 
   localStorage.setItem("gameSave", JSON.stringify(gameData));
-  console.log("Game saved with inventory: ", Inventory.getGameStateInventory());
+  //console.log("Game saved with inventory: ", Inventory.getGameStateInventory());
 }
 
 function loadGame() {
@@ -323,10 +323,7 @@ function loadGame() {
   const gameData = JSON.parse(save);
   Inventory.setGameStateInventory(gameData.inventory);
 
-  console.log(
-    "Loaded game with inventory: ",
-    Inventory.getGameStateInventory(),
-  );
+  //console.log("Loaded game with inventory: ", Inventory.getGameStateInventory());
 }
 
 function newGame() {

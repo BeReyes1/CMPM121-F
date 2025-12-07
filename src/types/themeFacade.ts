@@ -25,7 +25,7 @@ export class ThemeFacade {
   static setTheme(targetMode: ThemeMode) {
     this.currentMode = targetMode;
     this.listeners.forEach((listener) => listener(this.currentMode));
-    console.log("Theme is: " + this.currentMode);
+    //console.log("Theme is: " + this.currentMode);
   }
 
   static getMode(): ThemeMode {

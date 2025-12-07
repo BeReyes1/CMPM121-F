@@ -25,7 +25,8 @@ export class Scene3 implements Scene {
   barrierMeshes: THREE.Mesh[] = [];
   barrierBodies: any[] = [];
   barrierOpen = false;
-  collectableCount: number = 5.5;
+  coinCount: number = 5.5;
+  coinBodies: THREE.Mesh[] = [];
 
   onSceneLeave?: (targetScene: Scene) => void;
   onSaveGame?: () => void;
@@ -50,7 +51,7 @@ export class Scene3 implements Scene {
     this.makeFalseChests();
     this.makeTrueChest();
     this.makeKey();
-    this.makeCollectable();
+    this.makeCoins();
     this.makeGoalBarrier();
   }
 
@@ -192,6 +193,7 @@ export class Scene3 implements Scene {
   }
   //#endregion Goal
 
+  //#region Goal Barriers
   makeGoalBarrier() {
     if (!this.goalMesh) return;
 
@@ -225,6 +227,43 @@ export class Scene3 implements Scene {
       this.bodies[this.bodies.length - 2].body,
     );
   }
+
+  private handleBarrierEvent() {
+    if (this.barrierOpen) return;
+
+    const player = this.playerMesh;
+
+    const nearBarrier = this.barrierMeshes.some((b) =>
+      this.isNear(player, b, 1.5),
+    );
+
+    if (!nearBarrier) return;
+
+    const itemCount = Inventory.getGameStateInventory()["Coin"]?.quantity ?? 0;
+
+    if (itemCount >= this.coinCount) {
+      this.openBarrier();
+    } else {
+      this.uiText.textContent = Localization.getText("need_more_coins");
+    }
+  }
+
+  private openBarrier() {
+    this.barrierOpen = true;
+    this.uiText.textContent = Localization.getText("bank_opened");
+
+    for (let i = 0; i < this.barrierMeshes.length; i++) {
+      this.scene.remove(this.barrierMeshes[i]);
+      this.physicsWorld.removeRigidBody(this.barrierBodies[i]);
+    }
+
+    this.barrierMeshes = [];
+    this.barrierBodies = [];
+
+    Inventory.removeItem("Coin", this.coinCount);
+    this.onSaveGame?.();
+  }
+  //#endregion Goal Barriers
 
   //#region False Chests
   makeFalseChests() {
@@ -371,42 +410,6 @@ export class Scene3 implements Scene {
     };
     this.trueChest = this.makeBox(params);
   }
-  private handleBarrierEvent() {
-    if (this.barrierOpen) return;
-
-    const player = this.playerMesh;
-
-    const nearBarrier = this.barrierMeshes.some((b) =>
-      this.isNear(player, b, 1.5),
-    );
-
-    if (!nearBarrier) return;
-
-    const itemCount =
-      Inventory.getGameStateInventory()["Collectable"]?.quantity ?? 0;
-
-    if (itemCount >= this.collectableCount) {
-      this.openBarrier();
-    } else {
-      this.uiText.textContent = Localization.getText("need_more_coins");
-    }
-  }
-
-  private openBarrier() {
-    this.barrierOpen = true;
-    this.uiText.textContent = Localization.getText("bank_opened");
-
-    for (let i = 0; i < this.barrierMeshes.length; i++) {
-      this.scene.remove(this.barrierMeshes[i]);
-      this.physicsWorld.removeRigidBody(this.barrierBodies[i]);
-    }
-
-    this.barrierMeshes = [];
-    this.barrierBodies = [];
-
-    Inventory.removeItem("Collectable", this.collectableCount);
-    this.onSaveGame?.();
-  }
 
   private handleTrueChestEvent() {
     if (
@@ -438,7 +441,8 @@ export class Scene3 implements Scene {
   }
   //#endregion Key
 
-  makeCollectable() {
+  //#region Coin
+  makeCoins() {
     const color = new THREE.MeshBasicMaterial({ color: 0xffa500 });
     const params: Box[] = [
       {
@@ -573,11 +577,25 @@ export class Scene3 implements Scene {
       },
     ];
 
-    params.forEach((collectable) => {
-      const c = this.makeBox(collectable);
-      c.userData.type = "Collectable";
+    params.forEach((coin) => {
+      const c = this.makeBox(coin);
+      c.userData.type = "Coin";
+      this.coinBodies.push(c);
     });
   }
+
+  private handleCoinEvent() {
+    this.coinBodies.forEach((coin) => {
+      if (this.isNear(this.playerMesh, coin, 1.0)) {
+        const coinValue = 0.1 * Math.floor(Math.random() * 10);
+        Inventory.addItem("Coin", coinValue);
+        this.scene.remove(coin);
+        this.coinBodies = this.coinBodies.filter((aCoin) => aCoin !== coin);
+        this.onSaveGame?.();
+      }
+    });
+  }
+  //#endregion Coin
 
   //#region Key Collision
   private keyPickedUp = false;
@@ -607,13 +625,6 @@ export class Scene3 implements Scene {
     }
   }
 
-  private isNear(
-    a: THREE.Object3D,
-    b: THREE.Object3D,
-    threshold: number,
-  ): boolean {
-    return a.position.distanceTo(b.position) < threshold;
-  }
   //#endregion Key Collision
 
   //#region Keybinds
@@ -675,6 +686,7 @@ export class Scene3 implements Scene {
     this.handleFalseChestEvent();
     this.handleTrueChestEvent();
     this.handleGoalKeyEvents();
+    this.handleCoinEvent();
 
     this.handleBarrierEvent();
   }
@@ -726,14 +738,22 @@ export class Scene3 implements Scene {
     body.applyCentralImpulse(impulse);
   }
 
+  private isNear(
+    a: THREE.Object3D,
+    b: THREE.Object3D,
+    threshold: number,
+  ): boolean {
+    return a.position.distanceTo(b.position) < threshold;
+  }
+
   onCollect(hitObject: THREE.Object3D): void {
     if (hitObject.userData.type == "Key") {
       this.pickupKey(hitObject);
     }
 
-    if (hitObject.userData.type == "Collectable") {
-      const coinValue = 0.2 + Math.random() * (0.75 - 0.2);
-      Inventory.addItem("Collectable", coinValue);
+    if (hitObject.userData.type == "Coin") {
+      const coinValue = 0.1 * Math.floor(Math.random() * 10);
+      Inventory.addItem("Coin", coinValue);
       this.scene.remove(hitObject);
       this.onSaveGame?.();
     }
