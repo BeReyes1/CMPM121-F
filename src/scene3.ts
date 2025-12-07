@@ -21,11 +21,11 @@ export class Scene3 implements Scene {
   win: boolean = false;
   key: THREE.Mesh | null = null;
   scene!: THREE.Scene;
-  uiText : any;
+  uiText: any;
   barrierMeshes: THREE.Mesh[] = [];
   barrierBodies: any[] = [];
   barrierOpen = false;
-  collectableCount : number = 0.5
+  collectableCount: number = 5.5;
 
   onSceneLeave?: (targetScene: Scene) => void;
   onSaveGame?: () => void;
@@ -193,154 +193,154 @@ export class Scene3 implements Scene {
   //#endregion Goal
 
   makeGoalBarrier() {
-  if (!this.goalMesh) return;
+    if (!this.goalMesh) return;
 
-  const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-  
-  const rightWall = this.makeBox({
-    posX: this.goalMesh.position.x + 1,
-    posY: 1,
-    posZ: this.goalMesh.position.z,
-    sizeX: 1,
-    sizeY: 1,
-    sizeZ: 1,
-    color: material,
-    collide: true,
-  });
+    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 
-  const bottomWall = this.makeBox({
-    posX: this.goalMesh.position.x,
-    posY: 1,
-    posZ: this.goalMesh.position.z + 1,
-    sizeX: 1,
-    sizeY: 1,
-    sizeZ: 1,
-    color: material,
-    collide: true,
-  });
+    const rightWall = this.makeBox({
+      posX: this.goalMesh.position.x + 1,
+      posY: 1,
+      posZ: this.goalMesh.position.z,
+      sizeX: 1,
+      sizeY: 1,
+      sizeZ: 1,
+      color: material,
+      collide: true,
+    });
 
-  this.barrierMeshes.push(rightWall, bottomWall);
-  this.barrierBodies.push(
-    this.bodies[this.bodies.length - 1].body,
-    this.bodies[this.bodies.length - 2].body
-  );
-}
+    const bottomWall = this.makeBox({
+      posX: this.goalMesh.position.x,
+      posY: 1,
+      posZ: this.goalMesh.position.z + 1,
+      sizeX: 1,
+      sizeY: 1,
+      sizeZ: 1,
+      color: material,
+      collide: true,
+    });
+
+    this.barrierMeshes.push(rightWall, bottomWall);
+    this.barrierBodies.push(
+      this.bodies[this.bodies.length - 1].body,
+      this.bodies[this.bodies.length - 2].body,
+    );
+  }
 
   //#region False Chests
   makeFalseChests() {
     const color = new THREE.MeshBasicMaterial({ color: 0x7f6040 });
     const params: Box[] = [
-    {
-      posX: -6,
-      posY: 1,
-      posZ: -8,
-      sizeX: 1,
-      sizeY: 1,
-      sizeZ: 1,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: 3,
-      posY: 1,
-      posZ: -4,
-      sizeX: 1,
-      sizeY: 1,
-      sizeZ: 1,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: 7,
-      posY: 1,
-      posZ: 1,
-      sizeX: 1,
-      sizeY: 1,
-      sizeZ: 1,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: 4,
-      posY: 1,
-      posZ: 7,
-      sizeX: 1,
-      sizeY: 1,
-      sizeZ: 1,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: 6,
-      posY: 1,
-      posZ: 3,
-      sizeX: 1,
-      sizeY: 1,
-      sizeZ: 1,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: 8,
-      posY: 1,
-      posZ: 2,
-      sizeX: 1,
-      sizeY: 1,
-      sizeZ: 1,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: 5,
-      posY: 1,
-      posZ: 1,
-      sizeX: 1,
-      sizeY: 1,
-      sizeZ: 1,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: -3,
-      posY: 1,
-      posZ: 6,
-      sizeX: 1,
-      sizeY: 1,
-      sizeZ: 1,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: 1,
-      posY: 1,
-      posZ: 3,
-      sizeX: 1,
-      sizeY: 1,
-      sizeZ: 1,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: -5,
-      posY: 1,
-      posZ: 2,
-      sizeX: 1,
-      sizeY: 1,
-      sizeZ: 1,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: 2,
-      posY: 1,
-      posZ: 8,
-      sizeX: 1,
-      sizeY: 1,
-      sizeZ: 1,
-      color: color,
-      collide: true,
-    },
-  ];
+      {
+        posX: -6,
+        posY: 1,
+        posZ: -8,
+        sizeX: 1,
+        sizeY: 1,
+        sizeZ: 1,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 3,
+        posY: 1,
+        posZ: -4,
+        sizeX: 1,
+        sizeY: 1,
+        sizeZ: 1,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 7,
+        posY: 1,
+        posZ: 1,
+        sizeX: 1,
+        sizeY: 1,
+        sizeZ: 1,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 4,
+        posY: 1,
+        posZ: 7,
+        sizeX: 1,
+        sizeY: 1,
+        sizeZ: 1,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 6,
+        posY: 1,
+        posZ: 3,
+        sizeX: 1,
+        sizeY: 1,
+        sizeZ: 1,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 8,
+        posY: 1,
+        posZ: 2,
+        sizeX: 1,
+        sizeY: 1,
+        sizeZ: 1,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 5,
+        posY: 1,
+        posZ: 1,
+        sizeX: 1,
+        sizeY: 1,
+        sizeZ: 1,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: -3,
+        posY: 1,
+        posZ: 6,
+        sizeX: 1,
+        sizeY: 1,
+        sizeZ: 1,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 1,
+        posY: 1,
+        posZ: 3,
+        sizeX: 1,
+        sizeY: 1,
+        sizeZ: 1,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: -5,
+        posY: 1,
+        posZ: 2,
+        sizeX: 1,
+        sizeY: 1,
+        sizeZ: 1,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 2,
+        posY: 1,
+        posZ: 8,
+        sizeX: 1,
+        sizeY: 1,
+        sizeZ: 1,
+        color: color,
+        collide: true,
+      },
+    ];
 
     params.forEach((chest) => {
       this.falseChests.push(this.makeBox(chest));
@@ -372,44 +372,48 @@ export class Scene3 implements Scene {
     this.trueChest = this.makeBox(params);
   }
   private handleBarrierEvent() {
-  if (this.barrierOpen) return;
+    if (this.barrierOpen) return;
 
-  const player = this.playerMesh;
+    const player = this.playerMesh;
 
-  const nearBarrier = this.barrierMeshes.some(b => 
-    this.isNear(player, b, 1.5)
-  );
+    const nearBarrier = this.barrierMeshes.some((b) =>
+      this.isNear(player, b, 1.5),
+    );
 
-  if (!nearBarrier) return;
+    if (!nearBarrier) return;
 
-  const itemCount = Inventory.getGameStateInventory()["Collectable"]?.quantity ?? 0;
+    const itemCount =
+      Inventory.getGameStateInventory()["Collectable"]?.quantity ?? 0;
 
-  if (itemCount >= this.collectableCount) {
-    this.openBarrier();
-  } else {
-    this.uiText.textContent = Localization.getText("need_more_coins");
-  }
-}
-
-private openBarrier() {
-  this.barrierOpen = true;
-  this.uiText.textContent = Localization.getText("bank_opened");
-
-  for (let i = 0; i < this.barrierMeshes.length; i++) {
-    this.scene.remove(this.barrierMeshes[i]);
-    this.physicsWorld.removeRigidBody(this.barrierBodies[i]);
+    if (itemCount >= this.collectableCount) {
+      this.openBarrier();
+    } else {
+      this.uiText.textContent = Localization.getText("need_more_coins");
+    }
   }
 
-  this.barrierMeshes = [];
-  this.barrierBodies = [];
+  private openBarrier() {
+    this.barrierOpen = true;
+    this.uiText.textContent = Localization.getText("bank_opened");
 
-  Inventory.removeItem("Collectable", this.collectableCount);
-  this.onSaveGame?.();
-}
+    for (let i = 0; i < this.barrierMeshes.length; i++) {
+      this.scene.remove(this.barrierMeshes[i]);
+      this.physicsWorld.removeRigidBody(this.barrierBodies[i]);
+    }
 
+    this.barrierMeshes = [];
+    this.barrierBodies = [];
+
+    Inventory.removeItem("Collectable", this.collectableCount);
+    this.onSaveGame?.();
+  }
 
   private handleTrueChestEvent() {
-    if (!this.win && this.key != null && this.isNear(this.playerMesh, this.trueChest, 1.0)) {
+    if (
+      !this.win &&
+      this.key != null &&
+      this.isNear(this.playerMesh, this.trueChest, 1.0)
+    ) {
       this.uiText.textContent = Localization.getText("key_acquired");
       this.scene.add(this.key!);
     }
@@ -435,145 +439,145 @@ private openBarrier() {
   //#endregion Key
 
   makeCollectable() {
-        const color = new THREE.MeshBasicMaterial({ color: 0xFFA500 });
-        const params: Box[] = [
-    {
-      posX: 7,
-      posY: 1,
-      posZ: 5,
-      sizeX: 0.2,
-      sizeY: 0.2,
-      sizeZ: 0.2,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: 6,
-      posY: 1,
-      posZ: 4,
-      sizeX: 0.2,
-      sizeY: 0.2,
-      sizeZ: 0.2,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: 9,
-      posY: 1,
-      posZ: 9,
-      sizeX: 0.2,
-      sizeY: 0.2,
-      sizeZ: 0.2,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: 6,
-      posY: 1,
-      posZ: 2,
-      sizeX: 0.2,
-      sizeY: 0.2,
-      sizeZ: 0.2,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: 6,
-      posY: 1,
-      posZ: -8,
-      sizeX: 0.2,
-      sizeY: 0.2,
-      sizeZ: 0.2,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: 6,
-      posY: 1,
-      posZ: -2,
-      sizeX: 0.2,
-      sizeY: 0.2,
-      sizeZ: 0.2,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: -5,
-      posY: 1,
-      posZ: 8,
-      sizeX: 0.2,
-      sizeY: 0.2,
-      sizeZ: 0.2,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: -2,
-      posY: 1,
-      posZ: 2,
-      sizeX: 0.2,
-      sizeY: 0.2,
-      sizeZ: 0.2,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: -3,
-      posY: 1,
-      posZ: -4,
-      sizeX: 0.2,
-      sizeY: 0.2,
-      sizeZ: 0.2,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: 4,
-      posY: 1,
-      posZ: -6,
-      sizeX: 0.2,
-      sizeY: 0.2,
-      sizeZ: 0.2,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: -7,
-      posY: 1,
-      posZ: 3,
-      sizeX: 0.2,
-      sizeY: 0.2,
-      sizeZ: 0.2,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: 1,
-      posY: 1,
-      posZ: 7,
-      sizeX: 0.2,
-      sizeY: 0.2,
-      sizeZ: 0.2,
-      color: color,
-      collide: true,
-    },
-    {
-      posX: -8,
-      posY: 1,
-      posZ: -1,
-      sizeX: 0.2,
-      sizeY: 0.2,
-      sizeZ: 0.2,
-      color: color,
-      collide: true,
-    },
-  ];
-    
-        params.forEach((collectable) => {
-          const c = this.makeBox(collectable);
-          c.userData.type = "Collectable";
-        });
-      }
+    const color = new THREE.MeshBasicMaterial({ color: 0xffa500 });
+    const params: Box[] = [
+      {
+        posX: 7,
+        posY: 1,
+        posZ: 5,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 6,
+        posY: 1,
+        posZ: 4,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 9,
+        posY: 1,
+        posZ: 9,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 6,
+        posY: 1,
+        posZ: 2,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 6,
+        posY: 1,
+        posZ: -8,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 6,
+        posY: 1,
+        posZ: -2,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: -5,
+        posY: 1,
+        posZ: 8,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: -2,
+        posY: 1,
+        posZ: 2,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: -3,
+        posY: 1,
+        posZ: -4,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 4,
+        posY: 1,
+        posZ: -6,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: -7,
+        posY: 1,
+        posZ: 3,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 1,
+        posY: 1,
+        posZ: 7,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: -8,
+        posY: 1,
+        posZ: -1,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+    ];
+
+    params.forEach((collectable) => {
+      const c = this.makeBox(collectable);
+      c.userData.type = "Collectable";
+    });
+  }
 
   //#region Key Collision
   private keyPickedUp = false;

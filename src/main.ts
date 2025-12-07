@@ -18,7 +18,6 @@ let loadingScene = false;
 const raycast = new THREE.Raycaster();
 let mousePosition = new THREE.Vector2();
 
-
 async function loadScene(targetScene: Scene) {
   loadingScene = true;
 
@@ -175,7 +174,7 @@ function applyLocalization() {
   }
 
   if (level3Button) {
-    level3Button.textContent = Localization.getText("level3_button")
+    level3Button.textContent = Localization.getText("level3_button");
   }
 
   if (levelBackButton) {
@@ -235,7 +234,6 @@ if (level3Button) {
   });
 }
 
-
 if (levelBackButton) {
   levelBackButton.addEventListener("click", () => {
     levelSelectScreen?.classList.remove("visible");
@@ -253,23 +251,11 @@ if (restartButton) {
 //#endregion
 
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.enabled = false; 
+controls.enabled = false;
 
 const clock = new THREE.Clock();
 
 //#region Controls
-/*
-window.addEventListener("keydown", (event) => {
-  let changeLanguage: boolean = false;
-  if (event.code === "KeyL") {
-    const current = Localization.getLanguage();
-    const idx = LANG_ORDER.indexOf(current);
-    const next = LANG_ORDER[(idx + 1) % LANG_ORDER.length];
-    Localization.setLanguage(next);
-  }
-  if (changeLanguage) console.log("Language changed, new value: ", message());
-});*/
-
 window.addEventListener("click", (event) => {
   mousePosition = new THREE.Vector2(
     (event.clientX / window.innerWidth) * 2 - 1,
@@ -346,5 +332,5 @@ function loadGame() {
 function newGame() {
   localStorage.removeItem("gameSave");
   Inventory.setGameStateInventory({});
-  alert("New game started.");
+  alert(Localization.getText("new_game"));
 }

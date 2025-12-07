@@ -22,7 +22,7 @@ export class Scene1 implements Scene {
   win: boolean = false;
   key: THREE.Mesh | null = null;
   scene!: THREE.Scene;
-  uiText : any;
+  uiText: any;
 
   onSceneLeave?: (targetScene: Scene) => void;
   onSaveGame?: () => void;
@@ -37,7 +37,7 @@ export class Scene1 implements Scene {
     this.uiText.style.top = "";
 
     this.uiText.style.bottom = "20px";
-  this.uiText.textContent = Localization.getText("controls");
+    this.uiText.textContent = Localization.getText("controls");
 
     this.makeGround();
     this.makeWalls();
@@ -254,7 +254,11 @@ export class Scene1 implements Scene {
   }
 
   private handleTrueChestEvent() {
-    if (this.key != null && !this.win && this.isNear(this.playerMesh, this.trueChest, 1.0)) {
+    if (
+      this.key != null &&
+      !this.win &&
+      this.isNear(this.playerMesh, this.trueChest, 1.0)
+    ) {
       this.uiText.textContent = Localization.getText("key_acquired");
       this.scene.add(this.key!);
     }
@@ -280,7 +284,7 @@ export class Scene1 implements Scene {
   //#endregion Key
 
   makeCollectable() {
-    const color = new THREE.MeshBasicMaterial({ color: 0xFFA500 });
+    const color = new THREE.MeshBasicMaterial({ color: 0xffa500 });
     const params: Box[] = [
       {
         posX: 0,
@@ -395,8 +399,6 @@ export class Scene1 implements Scene {
 
   //#region Functions
   handleSceneLeave = () => {
-    
-
     this.onSceneLeave?.(new Scene2());
   };
 

@@ -22,7 +22,7 @@ export class Scene2 implements Scene {
   win: boolean = false;
   key: THREE.Mesh | null = null;
   scene!: THREE.Scene;
-  uiText : any;
+  uiText: any;
 
   onSceneLeave?: (targetScene: Scene) => void;
   onSaveGame?: () => void;
@@ -37,7 +37,7 @@ export class Scene2 implements Scene {
     this.uiText.style.top = "";
 
     this.uiText.style.bottom = "20px";
-  this.uiText.textContent = Localization.getText("controls");
+    this.uiText.textContent = Localization.getText("controls");
 
     this.makeGround();
     this.makeWalls();
@@ -284,7 +284,11 @@ export class Scene2 implements Scene {
   }
 
   private handleTrueChestEvent() {
-    if (!this.win && this.key != null && this.isNear(this.playerMesh, this.trueChest, 1.0)) {
+    if (
+      !this.win &&
+      this.key != null &&
+      this.isNear(this.playerMesh, this.trueChest, 1.0)
+    ) {
       this.uiText.textContent = Localization.getText("key_acquired");
       this.scene.add(this.key!);
     }
@@ -310,86 +314,85 @@ export class Scene2 implements Scene {
   //#endregion Key
 
   makeCollectable() {
-      const color = new THREE.MeshBasicMaterial({ color: 0xFFA500 });
-      const params: Box[] = [
-        {
-          posX: 7,
-          posY: 1,
-          posZ: 5,
-          sizeX: 0.2,
-          sizeY: 0.2,
-          sizeZ: 0.2,
-          color: color,
-          collide: true,
-        },
-        {
-          posX: 6,
-          posY: 1,
-          posZ: 4,
-          sizeX: 0.2,
-          sizeY: 0.2,
-          sizeZ: 0.2,
-          color: color,
-          collide: true,
-        },
-        {
-          posX: 9,
-          posY: 1,
-          posZ: 9,
-          sizeX: 0.2,
-          sizeY: 0.2,
-          sizeZ: 0.2,
-          color: color,
-          collide: true,
-        },
-        {
-          posX: 6,
-          posY: 1,
-          posZ: 2,
-          sizeX: 0.2,
-          sizeY: 0.2,
-          sizeZ: 0.2,
-          color: color,
-          collide: true,
-        },
-        {
-          posX: 6,
-          posY: 1,
-          posZ: -8,
-          sizeX: 0.2,
-          sizeY: 0.2,
-          sizeZ: 0.2,
-          color: color,
-          collide: true,
-        },
-         {
-          posX: 6,
-          posY: 1,
-          posZ: -2,
-          sizeX: 0.2,
-          sizeY: 0.2,
-          sizeZ: 0.2,
-          color: color,
-          collide: true,
-        
-        },
-        {
-          posX: -5,
-          posY: 1,
-          posZ: 8,
-          sizeX: 0.2,
-          sizeY: 0.2,
-          sizeZ: 0.2,
-          color: color,
-          collide: true,
-        },
-      ];
-  
-      params.forEach((collectable) => {
-        const c = this.makeBox(collectable);
-        c.userData.type = "Collectable";
-      });
-    }
+    const color = new THREE.MeshBasicMaterial({ color: 0xffa500 });
+    const params: Box[] = [
+      {
+        posX: 7,
+        posY: 1,
+        posZ: 5,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 6,
+        posY: 1,
+        posZ: 4,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 9,
+        posY: 1,
+        posZ: 9,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 6,
+        posY: 1,
+        posZ: 2,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 6,
+        posY: 1,
+        posZ: -8,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: 6,
+        posY: 1,
+        posZ: -2,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+      {
+        posX: -5,
+        posY: 1,
+        posZ: 8,
+        sizeX: 0.2,
+        sizeY: 0.2,
+        sizeZ: 0.2,
+        color: color,
+        collide: true,
+      },
+    ];
+
+    params.forEach((collectable) => {
+      const c = this.makeBox(collectable);
+      c.userData.type = "Collectable";
+    });
+  }
 
   //#region Key Collision
   private keyPickedUp = false;

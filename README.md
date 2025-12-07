@@ -127,7 +127,7 @@ We had a meeting to discuss next steps for our project and designated tasks for 
 ### Continuous Inventory
 
 We chose continuous inventory because we already had a working inventory system, so this seemed easy to implement.
-The inventory system is a public class. It has functions to add and remove `InventoryItems`. `InventoryItem` is a defined type that has a quantity value. This allows our inventory to carry multiples of an inventory item if needed. An example of this in action was\_\_\_
+The inventory system is a public class. It has functions to add and remove `InventoryItems`. `InventoryItem` is a defined type that has a quantity value. This allows our inventory to carry multiples of an inventory item if needed. An example of this in action was with
 
 ### Save System
 

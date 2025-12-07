@@ -49,36 +49,36 @@
     "jp": "戻る",
     "ar": "رجوع"
   },
-  "controls" : {
+  "controls": {
     "en": "WASD to Move",
-    "jp" : "WASDで移動",
-    "ar" : "WASD للتحرك"
+    "jp": "WASDで移動",
+    "ar": "WASD للتحرك"
   },
-  "incorrect_chest" : {
+  "incorrect_chest": {
     "en": "No luck!",
     "jp": "運が悪かった！",
     "ar": "لا حظ!"
   },
-  "key_acquired" : {
+  "key_acquired": {
     "en": "Key acquired!",
     "jp": "キーを取得しました!",
     "ar": "تم الحصول على المفتاح!"
   },
   "need_key": {
-  "en": "Need a key!",
-  "jp": "鍵が必要だ！",
-  "ar": "أحتاج مفتاحاً!"
-},
+    "en": "Need a key!",
+    "jp": "鍵が必要だ！",
+    "ar": "أحتاج مفتاحاً!"
+  },
 
-"need_more_coins": {
-  "en": "Need more coins!",
-  "jp": "コインがもっと必要だ！",
-  "ar": "أحتاج المزيد من العملات!"
-},
+  "need_more_coins": {
+    "en": "Need more coins!",
+    "jp": "コインがもっと必要だ！",
+    "ar": "أحتاج المزيد من العملات!"
+  },
 
-"bank_opened": {
-  "en": "Bank opened!",
-  "jp": "銀行が開いた！",
-  "ar": "تم فتح البنك!"
-}
+  "bank_opened": {
+    "en": "Bank opened!",
+    "jp": "銀行が開いた！",
+    "ar": "تم فتح البنك!"
+  }
 }

@@ -111,9 +111,8 @@ canvas {
   border-radius: 16px;
   box-shadow: 0 40px 40px rgba(0, 0, 0, 0.5);
 
-  width: min(140px, 30vw); 
+  width: min(140px, 30vw);
 }
-
 
 .level-title {
   font-size: 24px;
