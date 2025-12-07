@@ -141,12 +141,13 @@ The light/dark mode of assets was created using the **Facade pattern**. The `The
 
 ### i18n/l8n
 
-We chose to implement this feature because internationalization and localization seemed like a fun challenge to tackle. Additionally, we would be allowing our game to a wider audience which is a positive. We’ve implemented language support for English, Japanese, and Arabic. The language settings can be changed either in the menu buttons, or through the associated keybinds as follows: “B” for English, “N” for Japanese, and “M” for Arabic. _Unfortunately, we’re unable to translate our title screen as it is a custom asset which does not translate well to other languages due to being a portmanteau._
+We chose to implement this feature because internationalization and localization seemed like a fun challenge to tackle. Additionally, we would be allowing our game to a wider audience which is a positive. We’ve implemented language support for English, Japanese, and Arabic. The language settings can be changed either in the menu buttons, or through the associated keybinds as follows: “B” for English, “N” for Japanese, and “M” for Arabic.
 Localization was implemented via the `Localization` class. `Localization` holds a `Record` with a unique type `Language` which holds one of our three languages. We have a JSON file with a key and the three languages that text will be in. All we developers need to do is call the localization script with the key we want to get the correct text or to set the language. In `main.ts`, a variable for the text must be initialized and calls the `getLanguage()` function, which references the translations listed in the JSON.
 
 ## Reflection
 
-We pivoted from unlimited undo to continuous inventory since it was closer to our inventory system and thus easier to implement than creating an entirely new undo system from scratch.
+We pivoted from unlimited undo to continuous inventory since it was closer to our inventory system and thus easier to implement than creating an entirely new undo system from scratch. The other three systems went pretty smoothly so a pivot was never considered. There were a few things that we couldn't accomplish. We couldn't get custom assets in the game itself other than things like the logo and end gif. We also couldn't do much playtesting due to features taking to long to be made. But, we were able to fix a few bugs that we found from playtesting it from previous versions of the game.
+
 
 ---
 
