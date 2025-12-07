@@ -315,7 +315,7 @@ export class Scene2 implements Scene {
     };
     this.key = this.makeBox(keyParams);
     this.scene.remove(this.key);
-    this.key.userData.type = "Key";
+    this.key.userData.type = "Key2";
   }
   //#endregion Key
 
@@ -425,7 +425,7 @@ export class Scene2 implements Scene {
     this.key = null;
     this.keyPickedUp = true;
 
-    Inventory.addItem("Key", 1);
+    Inventory.addItem("Key2", 1);
     this.onSaveGame?.();
   }
 
@@ -562,7 +562,7 @@ export class Scene2 implements Scene {
   }
 
   onCollect(hitObject: THREE.Object3D): void {
-    if (hitObject.userData.type == "Key") {
+    if (hitObject.userData.type == "Key2") {
       this.pickupKey(hitObject);
     }
 

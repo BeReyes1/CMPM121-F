@@ -246,16 +246,12 @@ if (restartButton) {
     newGame();
     endScreen?.classList.remove("visible");
     startScreen?.classList.add("visible");
+    window.location.reload();
   });
 }
 //#endregion
 
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enabled = false;
-
-const clock = new THREE.Clock();
-
-//#region Controls
+//#region Point-Click Handler
 window.addEventListener("click", (event) => {
   mousePosition = new THREE.Vector2(
     (event.clientX / window.innerWidth) * 2 - 1,
@@ -270,7 +266,7 @@ window.addEventListener("click", (event) => {
 
   if (currentScene) currentScene.onCollect(hitObject);
 });
-//#endregion
+//#endregion Point-Click Handler
 
 //#region Box
 export interface Box {
@@ -283,28 +279,7 @@ export interface Box {
   color: THREE.Material;
   collide: boolean;
 }
-//#endregion
-
-//#region Load Game
-loadGame();
-ThemeFacade.init();
-await Localization.initalizeRecord();
-Localization.subscribe(() => applyLocalization());
-applyLocalization();
-
-// like update in unity
-function animate() {
-  requestAnimationFrame(animate);
-  const delta = clock.getDelta();
-
-  controls.update();
-  if (currentScene && !loadingScene) currentScene.update(delta);
-
-  renderer.render(scene, camera);
-}
-
-animate();
-//#endregion
+//#endregion Box
 
 //#region Game State Functions
 function saveGame() {
@@ -318,10 +293,11 @@ function saveGame() {
 
 function loadGame() {
   const save = localStorage.getItem("gameSave");
-  if (!save) return;
+  if (!save) return null;
 
   const gameData = JSON.parse(save);
   Inventory.setGameStateInventory(gameData.inventory);
+  return gameData;
 
   //console.log("Loaded game with inventory: ", Inventory.getGameStateInventory());
 }
@@ -329,5 +305,36 @@ function loadGame() {
 function newGame() {
   localStorage.removeItem("gameSave");
   Inventory.setGameStateInventory({});
-  alert(Localization.getText("new_game"));
+  //alert(Localization.getText("new_game"));
 }
+
+window.addEventListener("keydown", (event) => {
+  if (event.code === "KeyN") newGame();
+});
+
+//#region Start Game
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enabled = false;
+
+loadGame();
+if (level2Button && Inventory.hasItem("Key1")) level2Button.disabled = false;
+if (level3Button && Inventory.hasItem("Key2")) level3Button.disabled = false;
+ThemeFacade.init();
+await Localization.initalizeRecord();
+Localization.subscribe(() => applyLocalization());
+applyLocalization();
+
+const clock = new THREE.Clock();
+animate();
+
+// like update in unity
+function animate() {
+  requestAnimationFrame(animate);
+  const delta = clock.getDelta();
+
+  controls.update();
+  if (currentScene && !loadingScene) currentScene.update(delta);
+
+  renderer.render(scene, camera);
+}
+//#endregion Start Game
