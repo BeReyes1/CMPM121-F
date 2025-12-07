@@ -309,7 +309,10 @@ function newGame() {
 }
 
 window.addEventListener("keydown", (event) => {
-  if (event.code === "KeyN") newGame();
+  if (event.code === "KeyN") {
+    newGame();
+    window.location.reload();
+  }
 });
 
 //#region Start Game

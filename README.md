@@ -150,6 +150,21 @@ We pivoted from unlimited undo to continuous inventory since it was closer to ou
 
 ---
 
+# Credits
+
+### Art by
+
+Kimberly Jeung at [kljeung](https://github.com/kljeung)
+
+### Programming and Design by
+
+Beckham Reyes at [BeReyes1](https://github.com/BeReyes1)<br>
+Reece Talaro at [RTalaro](https://github.com/RTalaro)<br>
+Kimberly Jeung at [kljeung](https://github.com/kljeung)<br>
+Vivian Allen at [GabrielJAllen](https://github.com/GabrielJAllen)<br>
+
+---
+
 # Dev Commands
 
 ### Run in browser:
