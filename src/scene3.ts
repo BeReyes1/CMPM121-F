@@ -753,6 +753,7 @@ export class Scene3 implements Scene {
   }
 
   collectCoin(coinObj: THREE.Object3D) {
+    if (!this.coinBodies.some((aCoin) => aCoin == coinObj)) return;
     const coinValue = 0.1 * Math.floor(Math.random() * 10);
     Inventory.addItem("Coin", coinValue);
     this.scene.remove(coinObj);
