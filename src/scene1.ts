@@ -335,11 +335,7 @@ export class Scene1 implements Scene {
   private handleCoinEvent() {
     this.coinBodies.forEach((coin) => {
       if (this.isNear(this.playerMesh, coin, 1.0)) {
-        const coinValue = 0.1 * Math.floor(Math.random() * 10);
-        Inventory.addItem("Coin", coinValue);
-        this.scene.remove(coin);
-        this.coinBodies = this.coinBodies.filter((aCoin) => aCoin !== coin);
-        this.onSaveGame?.();
+        this.collectCoin(coin);
       }
     });
   }
@@ -497,12 +493,16 @@ export class Scene1 implements Scene {
     }
 
     if (hitObject.userData.type == "Coin") {
-      const coinValue = 0.1 * Math.floor(Math.random() * 10);
-      Inventory.addItem("Coin", coinValue);
-      this.scene.remove(hitObject);
-      this.coinBodies = this.coinBodies.filter((aCoin) => aCoin !== hitObject);
-      this.onSaveGame?.();
+      this.collectCoin(hitObject);
     }
+  }
+
+  collectCoin(coinObj: THREE.Object3D) {
+    const coinValue = 0.1 * Math.floor(Math.random() * 10);
+    Inventory.addItem("Coin", coinValue);
+    this.scene.remove(coinObj);
+    this.coinBodies = this.coinBodies.filter((aCoin) => aCoin !== coinObj);
+    this.onSaveGame?.();
   }
 }
 //#endregion Functions
