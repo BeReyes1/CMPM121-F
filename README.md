@@ -132,7 +132,7 @@ The inventory system relies on a public `Inventory` class. It holds the function
 ### Save System
 
 We chose the save system because we had familiarity with it from D3.
-There are three functions related to this feature, which we kept in `main.ts`: `saveGame()`, `loadGame()`, and `newGame()`. `saveGame()` saves the player’s inventory to the localStorage API. This allows `loadGame()` to access it and set the inventory to the saved one when loading the current save. Each scene could access these functions by firing an event which allowed `main.ts` to read the event and save the game. We probably could have turned this sytem into its own public class but this is what we made in the given time.
+There are three functions related to this feature, which we kept in `main.ts`: `saveGame()`, `loadGame()`, and `newGame()`. `saveGame()` saves the player’s inventory to the localStorage API. This allows `loadGame()` to access it and set the inventory to the saved one when loading the current save. Each scene could access these functions by firing an event which allowed `main.ts` to read the event and save the game. We probably could have turned this system into its own public class but this is what we made in the given time.
 
 ### Visual Themes
 
