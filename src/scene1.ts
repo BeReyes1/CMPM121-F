@@ -500,6 +500,7 @@ export class Scene1 implements Scene {
       const coinValue = 0.1 * Math.floor(Math.random() * 10);
       Inventory.addItem("Coin", coinValue);
       this.scene.remove(hitObject);
+      this.coinBodies = this.coinBodies.filter((aCoin) => aCoin !== hitObject);
       this.onSaveGame?.();
     }
   }
